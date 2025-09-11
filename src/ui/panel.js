@@ -272,7 +272,7 @@ class Panel {
     </div>
     <div class="a11y-detail-section">
         <h3>Learn More</h3>
-        <p>${v.learnMore?.explanation ?? "No further information provided."}</p>
+        <p>${v.learnMore?.explanation ?? "No further information."}</p>
         <ul>${resourcesHTML}</ul>
     </div>
   `;

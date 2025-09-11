@@ -109,10 +109,14 @@ class Overlay {
    * @param {Array} results - The list of all current violations.
    */
   updateMarkers(results) {
-    // Clear old markers that no longer exist
-    const currentSelectors = new Set(results.map((r) => r.selector));
-    for (const [selector, marker] of this.markers.entries()) {
-      if (!currentSelectors.has(selector)) {
+    // Build a set of active keys (selector::ruleId)
+    const activeKeys = new Set(
+      results.map((r) => `${r.selector}::${r.ruleId}`)
+    );
+
+    // Remove old markers no longer in results
+    for (const [key, marker] of this.markers.entries()) {
+      if (!activeKeys.has(key)) {
         marker.remove();
         this.markers.delete(selector);
       }

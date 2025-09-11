@@ -26,8 +26,8 @@ class Panel {
     if (document.getElementById("a11y-panel-styles")) return;
     const styles = `
       .a11y-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
-      #a11y-live-panel { display: none; flex-direction: column; position: fixed; right: 1rem; bottom: 1rem; width: 450px; max-width: 90vw; height: 600px; max-height: 70vh; background-color: #fff; border-radius: 0.75rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -2px rgba(0,0,0,.05); border: 1px solid #e5e7eb; z-index: 2147483647; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; color: #1f2937; transition: transform .3s ease, opacity .3s ease; transform: translateY(2rem); opacity: 0; }
-      #a11y-live-panel.visible { transform: translateY(0); opacity: 1; display: flex; }
+      #a11y-live-panel { display:flex; flex-direction:column; position:fixed; right:1rem; bottom:1rem; width:450px; max-width:90vw; height:600px; max-height:70vh; background-color:#fff; border-radius:0.75rem; box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05); border:1px solid #e5e7eb; z-index:2147483647; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; color:#1f2937; transform:translateY(2rem); opacity:0; visibility:hidden; transition:transform .3s ease,opacity .3s ease,visibility 0s linear .3s; }
+      #a11y-live-panel.visible { transform:translateY(0); opacity:1; visibility:visible; transition:transform .3s ease,opacity .3s ease,visibility 0s; }
       .a11y-panel-header { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.25rem; border-bottom: 1px solid #e5e7eb; background-color: #f9fafb; border-radius: 0.75rem 0.75rem 0 0; }
       .a11y-panel-header h2 { font-size: 1.125rem; font-weight: 600; margin: 0; }
       .a11y-panel-controls button { background: none; border: 1px solid transparent; border-radius: 0.375rem; padding: 0.5rem; cursor: pointer; color: #6b7280; transition: background-color .2s; }

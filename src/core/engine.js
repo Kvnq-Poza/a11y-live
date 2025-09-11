@@ -139,22 +139,73 @@ class A11yEngine {
 
   /**
    * Analyze specific elements for accessibility violations
-   * @param {NodeList|Array<Element>} elements - Elements to analyze
+   * @param {Element|NodeList|Array<Element>} elements - Elements to analyze
    * @returns {Promise<Array<AnalysisResult>>}
    */
   async analyze(elements) {
     const startTime = performance.now();
 
     try {
-      // Convert NodeList to Array if needed
-      const elementsArray = Array.from(elements || []);
+      // Handle different input types
+      let elementsArray = [];
 
-      // Filter out non-element nodes and duplicates
-      const validElements = elementsArray.filter(
-        (el) => el && el.nodeType === Node.ELEMENT_NODE
-      );
+      if (!elements) {
+        console.warn("No elements provided for analysis");
+        return [];
+      }
+
+      // Handle single Element
+      if (elements instanceof Element) {
+        elementsArray = [elements];
+        // Also analyze all children
+        const children = elements.querySelectorAll("*");
+        elementsArray.push(...Array.from(children));
+      }
+      // Handle NodeList or HTMLCollection
+      else if (
+        elements instanceof NodeList ||
+        elements instanceof HTMLCollection
+      ) {
+        elementsArray = Array.from(elements);
+        // For each element, also include its children
+        const allElements = [];
+        elementsArray.forEach((el) => {
+          allElements.push(el);
+          const children = el.querySelectorAll("*");
+          allElements.push(...Array.from(children));
+        });
+        elementsArray = allElements;
+      }
+      // Handle Array
+      else if (Array.isArray(elements)) {
+        const allElements = [];
+        elements.forEach((el) => {
+          if (el instanceof Element) {
+            allElements.push(el);
+            const children = el.querySelectorAll("*");
+            allElements.push(...Array.from(children));
+          }
+        });
+        elementsArray = allElements;
+      }
+      // Handle querySelector result that's null
+      else {
+        console.warn("Invalid element type provided:", typeof elements);
+        return [];
+      }
+
+      // Filter out non-element nodes and remove duplicates
+      const uniqueElements = new Map();
+      elementsArray.forEach((el) => {
+        if (el && el.nodeType === Node.ELEMENT_NODE) {
+          uniqueElements.set(el, el);
+        }
+      });
+
+      const validElements = Array.from(uniqueElements.values());
 
       if (validElements.length === 0) {
+        console.log("No valid elements to analyze");
         return [];
       }
 
@@ -196,7 +247,9 @@ class A11yEngine {
       // Update UI only if there are results
       if (this._uiManager && processedResults.length > 0) {
         this._uiManager.updateResults(processedResults);
-        console.log(processedResults);
+        console.log(
+          `Found ${processedResults.length} issues in analyzed element(s)`
+        );
       }
 
       return processedResults;

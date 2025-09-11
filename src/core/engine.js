@@ -422,7 +422,19 @@ class A11yEngine {
       return;
     }
 
+    // Throttle analysis to prevent excessive processing
+    const now = Date.now();
+    if (now - this._lastAnalysisTime < this._analysisThrottleMs) {
+      // Schedule for later
+      this._debounceTimer = setTimeout(
+        this._processBatch,
+        this._analysisThrottleMs
+      );
+      return;
+    }
+
     this._isAnalyzing = true;
+    this._lastAnalysisTime = now;
 
     try {
       // Dequeue all pending mutations
@@ -430,9 +442,6 @@ class A11yEngine {
 
       // Flatten and deduplicate elements
       const allElements = new Set();
-      batch.forEach((item) => {
-        item.elements.forEach((el) => allElements.add(el));
-      });
 
       // Limit batch size for performance
       const elementsToAnalyze = Array.from(allElements).slice(
@@ -441,7 +450,13 @@ class A11yEngine {
       );
 
       if (elementsToAnalyze.length > 0) {
-        await this.analyze(elementsToAnalyze);
+        // Use requestAnimationFrame for better performance
+        await new Promise((resolve) => {
+          requestAnimationFrame(async () => {
+            await this.analyze(elementsToAnalyze);
+            resolve();
+          });
+        });
       }
     } catch (error) {
       console.error("Batch processing failed:", error);

@@ -125,7 +125,7 @@ class A11yEngine {
 
       // Clean up UI
       if (this._uiManager) {
-        this._uiManager._closePanel();
+        this._uiManager.cleanup();
       }
 
       // Clear caches

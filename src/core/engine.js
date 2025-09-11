@@ -123,11 +123,6 @@ class A11yEngine {
       }
       this._analysisQueue = [];
 
-      // Clean up UI
-      if (this._uiManager) {
-        this._uiManager.cleanup();
-      }
-
       // Clear caches
       this._cache.clear();
 

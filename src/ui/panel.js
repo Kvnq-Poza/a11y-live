@@ -195,6 +195,12 @@ class Panel {
         this._render();
       });
     });
+
+    // Scroll the selected item into view
+    const selectedItem = listEl.querySelector(".a11y-violation-item.selected");
+    if (selectedItem) {
+      selectedItem.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
   }
 
   _renderDetail() {

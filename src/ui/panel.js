@@ -207,55 +207,64 @@ class Panel {
     detailEl.classList.remove("hidden");
     sidebarEl.style.width = "50%";
 
-    const fixSuggestionsHTML = v.fixSuggestions
+    // Safe defaults
+    const fixSuggestionsHTML = (v.fixSuggestions ?? [])
       .map(
         (s) => `
-        <p>${s.action}:</p>
-        <div class="a11y-code-block">${this._escapeHtml(s.code)}</div>
-    `
+        <p>${s.action ?? "Fix"}:</p>
+        <div class="a11y-code-block">${this._escapeHtml(s.code ?? "")}</div>
+      `
       )
       .join("");
 
-    const resourcesHTML = v.learnMore.additionalResources
+    const resourcesHTML = (v.learnMore?.additionalResources ?? [])
       .map(
         (url) => `
         <li><a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a></li>
-    `
+      `
       )
       .join("");
 
+    const wcagTag = v.learnMore?.wcagLink
+      ? `<a href="${
+          v.learnMore.wcagLink
+        }" target="_blank" rel="noopener noreferrer" class="a11y-tag a11y-tag-wcag">WCAG ${
+          v.wcag ?? ""
+        }</a>`
+      : "";
+
     detailEl.innerHTML = `
-        <div class="a11y-detail-header">
-            <h2 class="a11y-detail-title">${v.name}</h2>
-            <span class="a11y-tag a11y-tag-${v.severity}">${v.severity}</span>
-            <a href="${
-              v.learnMore.wcagLink
-            }" target="_blank" rel="noopener noreferrer" class="a11y-tag a11y-tag-wcag">WCAG ${
-      v.wcag
-    }</a>
-        </div>
-        <div class="a11y-detail-section">
-            <h3>Description</h3>
-            <p>${v.description}</p>
-        </div>
-        <div class="a11y-detail-section">
-            <h3>Element</h3>
-            <div class="a11y-code-block">${this._escapeHtml(v.selector)}</div>
-        </div>
-        <div class="a11y-detail-section">
-            <h3>User Impact</h3>
-            <p>${v.userImpact}</p>
-        </div>
-        <div class="a11y-detail-section">
-            <h3>How to Fix</h3>
-            ${fixSuggestionsHTML}
-        </div>
-        <div class="a11y-detail-section">
-            <h3>Learn More</h3>
-            <p>${v.learnMore.explanation}</p>
-            <ul>${resourcesHTML}</ul>
-        </div>
-    `;
+    <div class="a11y-detail-header">
+        <h2 class="a11y-detail-title">${v.name ?? "Unknown Issue"}</h2>
+        <span class="a11y-tag a11y-tag-${v.severity ?? "warning"}">${
+      v.severity ?? "N/A"
+    }</span>
+        ${wcagTag}
+    </div>
+    <div class="a11y-detail-section">
+        <h3>Description</h3>
+        <p>${v.description ?? "No description provided."}</p>
+    </div>
+    <div class="a11y-detail-section">
+        <h3>Element</h3>
+        <div class="a11y-code-block">${this._escapeHtml(
+          v.selector ?? "N/A"
+        )}</div>
+    </div>
+    <div class="a11y-detail-section">
+        <h3>User Impact</h3>
+        <p>${v.userImpact ?? "Not specified."}</p>
+    </div>
+    <div class="a11y-detail-section">
+        <h3>How to Fix</h3>
+        ${fixSuggestionsHTML || "<p>No fix suggestions available.</p>"}
+    </div>
+    <div class="a11y-detail-section">
+        <h3>Learn More</h3>
+        <p>${v.learnMore?.explanation ?? "No further information provided."}</p>
+        <ul>${resourcesHTML}</ul>
+    </div>
+  `;
   }
 
   _escapeHtml(str) {

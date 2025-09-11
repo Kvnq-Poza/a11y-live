@@ -6,6 +6,37 @@
  * using MutationObserver to monitor DOM changes and execute accessibility rules.
  */
 
+// Utility: dynamically load scripts
+async function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    if (document.querySelector(`script[data-a11y="${src}"]`)) {
+      return resolve(); // already loaded
+    }
+
+    const script = document.createElement("script");
+    script.src = src;
+    script.async = false;
+    script.defer = false;
+    script.dataset.a11y = src;
+    script.onload = resolve;
+    script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+    document.head.appendChild(script);
+  });
+}
+
+// Ensure dependencies are loaded before defining the engine
+async function loadDependencies() {
+  // Core scripts (must come first)
+  await loadScript("./src/core/rules.js");
+  await loadScript("./src/core/reporter.js");
+
+  // UI scripts (only if UI enabled)
+  await loadScript("./src/ui/overlay.js");
+  await loadScript("./src/ui/panel.js");
+  await loadScript("./src/ui/tutorial.js");
+  await loadScript("./src/ui/ui-Manager.js");
+}
+
 class A11yEngine {
   constructor(options = {}) {
     // Merge options with defaults
@@ -28,10 +59,10 @@ class A11yEngine {
     this._cache = new Map();
     this._isStarted = false;
 
-    // Initialize core components
-    this._ruleEngine = new RuleEngine();
-    this._reporter = new Reporter();
-    this._uiManager = this.options.enableUI ? new UIManager(this) : null;
+    // Components are initialized after scripts are loaded
+    this._ruleEngine = null;
+    this._reporter = null;
+    this._uiManager = null;
 
     // Performance monitoring
     this._stats = {
@@ -44,6 +75,18 @@ class A11yEngine {
     // Bind methods to preserve context
     this._handleMutations = this._handleMutations.bind(this);
     this._processBatch = this._processBatch.bind(this);
+  }
+
+  /**
+   * Initialize engine dependencies and components
+   */
+  async _initializeDependencies() {
+    await loadDependencies();
+
+    // Now that scripts are loaded, these classes exist globally
+    this._ruleEngine = new RuleEngine();
+    this._reporter = new Reporter();
+    this._uiManager = this.options.enableUI ? new UIManager(this) : null;
   }
 
   /**
@@ -62,31 +105,27 @@ class A11yEngine {
     }
 
     try {
-      // Merge any override options
       Object.assign(this.options, overrideOptions);
 
-      // Validate browser support
       if (!this._checkBrowserSupport()) {
         throw new Error("Browser does not support required APIs");
       }
 
-      // Initialize target element - use document.body as specified
-      this.options.target = this.options.target || document.body;
+      // Load dependencies dynamically
+      if (!this._ruleEngine || !this._reporter) {
+        await this._initializeDependencies();
+      }
 
-      // Set up MutationObserver for DOM change monitoring (but don't start continuous analysis)
+      this.options.target = this.options.target || document.body;
       this._setupMutationObserver();
 
-      // Initialize UI if enabled
       if (this._uiManager) {
         await this._uiManager.initialize();
       }
 
-      // Perform one-time analysis of current page content
       await this._analyzeCurrentPage();
-
       this._isStarted = true;
 
-      // Emit started event
       this._emitEvent("started", {
         target: this.options.target,
         rulesEnabled: this._ruleEngine.getEnabledRules().length,

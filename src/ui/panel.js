@@ -166,11 +166,16 @@ class Panel {
       listEl.innerHTML = `<li class="a11y-empty-state">No issues found.</li>`;
       return;
     }
+
     listEl.innerHTML = results
       .map(
         (r) => `
       <li class="a11y-violation-item ${
-        this.selectedViolation === r ? "selected" : ""
+        this.selectedViolation &&
+        r.selector === this.selectedViolation.selector &&
+        r.ruleId === this.selectedViolation.ruleId
+          ? "selected"
+          : ""
       }" data-selector="${r.selector}" data-rule="${r.ruleId}">
         <div class="a11y-violation-title">${r.name}</div>
         <div class="a11y-violation-meta">${r.selector}</div>

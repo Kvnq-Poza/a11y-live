@@ -106,6 +106,7 @@ class Overlay {
 
   /**
    * Updates the small dot markers for all current violations.
+   * Ensures each violation has its own marker, placed correctly and clickable.
    * @param {Array} results - The list of all current violations.
    */
   updateMarkers(results) {
@@ -118,7 +119,7 @@ class Overlay {
     for (const [key, marker] of this.markers.entries()) {
       if (!activeKeys.has(key)) {
         marker.remove();
-        this.markers.delete(selector);
+        this.markers.delete(key);
       }
     }
 
@@ -127,31 +128,30 @@ class Overlay {
       const el = document.querySelector(violation.selector);
       if (!el) return;
 
-      let marker = this.markers.get(violation.selector);
+      const key = `${violation.selector}::${violation.ruleId}`;
+      let marker = this.markers.get(key);
+
       if (!marker) {
         marker = document.createElement("div");
         marker.className = `a11y-issue-marker ${violation.severity}`;
         marker.title = violation.name;
         document.body.appendChild(marker);
-        this.markers.set(violation.selector, marker);
+        this.markers.set(key, marker);
 
         marker.addEventListener("click", (e) => {
           e.stopPropagation();
           this.uiManager.showPanel();
-          // This is a simplified interaction. The panel should handle selecting the issue.
           this.uiManager.panel.selectedViolation = violation;
           this.uiManager.panel._render();
           this.highlight(el, violation);
         });
       }
 
+      // Position marker relative to viewport + scroll
       const rect = el.getBoundingClientRect();
-      const scrollTop =
-        window.pageYOffset || document.documentElement.scrollTop;
-      const scrollLeft =
-        window.pageXOffset || document.documentElement.scrollLeft;
-      marker.style.top = `${rect.top + scrollTop - 6}px`;
-      marker.style.left = `${rect.left + scrollLeft - 6}px`;
+      const markerSize = 12;
+      marker.style.top = `${window.scrollY + rect.top - markerSize / 2}px`;
+      marker.style.left = `${window.scrollX + rect.left - markerSize / 2}px`;
     });
   }
 

@@ -70,10 +70,10 @@ class A11yEngine {
         throw new Error("Browser does not support required APIs");
       }
 
-      // Initialize target element
+      // Initialize target element - use document.body as specified
       this.options.target = this.options.target || document.body;
 
-      // Set up MutationObserver
+      // Set up MutationObserver for DOM change monitoring (but don't start continuous analysis)
       this._setupMutationObserver();
 
       // Initialize UI if enabled
@@ -81,8 +81,8 @@ class A11yEngine {
         await this._uiManager.initialize();
       }
 
-      // Perform initial analysis of existing DOM
-      await this._performInitialAnalysis();
+      // Perform one-time analysis of current page content
+      await this._analyzeCurrentPage();
 
       this._isStarted = true;
 
@@ -223,9 +223,9 @@ class A11yEngine {
         this._ruleEngine.updateEnabledRules(newConfig.rules);
         this._cache.clear(); // Clear cache since rules changed
 
-        // Re-analyze visible elements
+        // Re-analyze current page if engine is running
         if (this._isStarted) {
-          this._performInitialAnalysis();
+          this._analyzeCurrentPage();
         }
       }
 
@@ -398,27 +398,39 @@ class A11yEngine {
   }
 
   /**
-   * Perform initial analysis of existing DOM
+   * Analyze current page content (replaces _performInitialAnalysis)
+   * This method specifically inspects document.body.querySelectorAll("*")
    */
-  async _performInitialAnalysis() {
+  async _analyzeCurrentPage() {
     try {
-      const allElements = this.options.target.querySelectorAll("*");
+      // Get all elements from document.body
+      const allElements = document.body.querySelectorAll("*");
       const elementsArray = Array.from(allElements).slice(
         0,
         this.options.maxElements
       );
 
+      console.log(
+        `🔍 Analyzing ${elementsArray.length} elements from current page`
+      );
+
       if (elementsArray.length > 0) {
-        const results = await this.analyze(elementsArray);
+        // Pass document.body to analyze method to include body itself
+        const results = await this.analyze(document.body);
 
         // Ensure UI gets the results
         if (this._uiManager && results.length > 0) {
           this._uiManager.updateResults(results);
-          console.log(results);
+          console.log(`📊 Found ${results.length} accessibility issues`);
+        } else if (results.length === 0) {
+          console.log("✅ No accessibility issues found on current page");
         }
+
+        return results;
       }
     } catch (error) {
-      console.error("Initial analysis failed:", error);
+      console.error("Current page analysis failed:", error);
+      return [];
     }
   }
 

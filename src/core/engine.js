@@ -305,44 +305,6 @@ class A11yEngine {
   }
 
   /**
-   * Update configuration without restarting
-   * @param {Object} newConfig - New configuration options
-   */
-  updateConfig(newConfig) {
-    try {
-      const oldConfig = { ...this.options };
-      Object.assign(this.options, newConfig);
-
-      // Update rule engine if rules changed
-      if (
-        newConfig.rules &&
-        JSON.stringify(newConfig.rules) !== JSON.stringify(oldConfig.rules)
-      ) {
-        this._ruleEngine.updateEnabledRules(newConfig.rules);
-        this._cache.clear(); // Clear cache since rules changed
-
-        // Re-analyze current page if engine is running
-        if (this._isStarted) {
-          this._analyzeCurrentPage();
-        }
-      }
-
-      // Update UI if needed
-      if (this._uiManager && newConfig.enableUI !== undefined) {
-        if (newConfig.enableUI && !oldConfig.enableUI) {
-          this._uiManager.initialize();
-        } else if (!newConfig.enableUI && oldConfig.enableUI) {
-          this._uiManager.cleanup();
-        }
-      }
-
-      this._emitEvent("configUpdated", { oldConfig, newConfig });
-    } catch (error) {
-      console.error("Failed to update config:", error);
-    }
-  }
-
-  /**
    * Get current statistics
    * @returns {Object} Performance and usage statistics
    */

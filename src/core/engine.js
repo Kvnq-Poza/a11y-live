@@ -45,8 +45,8 @@ class A11yEngine {
       realtime: true,
       rules: [],
       target: null,
-      debounceMs: 100,
-      maxElements: 50,
+      debounceMs: 300,
+      maxElements: 500,
       enableUI: true,
       ...options,
     };

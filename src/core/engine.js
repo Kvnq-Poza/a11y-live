@@ -78,15 +78,19 @@ class A11yEngine {
   }
 
   /**
-   * Initialize engine dependencies and components
+   * Initialize engine dependencies and UI components
    */
-  async _initializeDependencies() {
+  async _initializeDependenciesAndUI() {
     await loadDependencies();
 
     // Now that scripts are loaded, these classes exist globally
     this._ruleEngine = new RuleEngine();
     this._reporter = new Reporter();
     this._uiManager = this.options.enableUI ? new UIManager(this) : null;
+
+    if (this._uiManager) {
+      await this._uiManager.initialize();
+    }
   }
 
   /**

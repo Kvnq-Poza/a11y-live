@@ -305,6 +305,43 @@ class A11yEngine {
   }
 
   /**
+   * Analyze current page content (replaces _performInitialAnalysis)
+   * This method specifically inspects document.body.querySelectorAll("*")
+   */
+  async _analyzeCurrentPage() {
+    try {
+      // Get all elements from document.body
+      const allElements = document.body.querySelectorAll("*");
+      const elementsArray = Array.from(allElements).slice(
+        0,
+        this.options.maxElements
+      );
+
+      console.log(
+        `🔍 Analyzing ${elementsArray.length} elements from current page`
+      );
+
+      if (elementsArray.length > 0) {
+        // Pass document.body to analyze method to include body itself
+        const results = await this.analyze(document.body);
+
+        // Ensure UI gets the results
+        if (this._uiManager && results.length > 0) {
+          this._uiManager.updateResults(results);
+          console.log(`📊 Found ${results.length} accessibility issues`);
+        } else if (results.length === 0) {
+          console.log("✅ No accessibility issues found on current page");
+        }
+
+        return results;
+      }
+    } catch (error) {
+      console.error("Current page analysis failed:", error);
+      return [];
+    }
+  }
+
+  /**
    * Get current statistics
    * @returns {Object} Performance and usage statistics
    */
@@ -469,43 +506,6 @@ class A11yEngine {
       console.error("Batch processing failed:", error);
     } finally {
       this._isAnalyzing = false;
-    }
-  }
-
-  /**
-   * Analyze current page content (replaces _performInitialAnalysis)
-   * This method specifically inspects document.body.querySelectorAll("*")
-   */
-  async _analyzeCurrentPage() {
-    try {
-      // Get all elements from document.body
-      const allElements = document.body.querySelectorAll("*");
-      const elementsArray = Array.from(allElements).slice(
-        0,
-        this.options.maxElements
-      );
-
-      console.log(
-        `🔍 Analyzing ${elementsArray.length} elements from current page`
-      );
-
-      if (elementsArray.length > 0) {
-        // Pass document.body to analyze method to include body itself
-        const results = await this.analyze(document.body);
-
-        // Ensure UI gets the results
-        if (this._uiManager && results.length > 0) {
-          this._uiManager.updateResults(results);
-          console.log(`📊 Found ${results.length} accessibility issues`);
-        } else if (results.length === 0) {
-          console.log("✅ No accessibility issues found on current page");
-        }
-
-        return results;
-      }
-    } catch (error) {
-      console.error("Current page analysis failed:", error);
-      return [];
     }
   }
 

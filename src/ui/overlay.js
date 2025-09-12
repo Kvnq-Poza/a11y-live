@@ -73,6 +73,7 @@ class Overlay {
             }
             .a11y-issue-marker.error { background-color: #ef4444; }
             .a11y-issue-marker.warning { background-color: #f59e0b; }
+            .a11y-issue-marker.info { background-color: #0b55f5; }
         `;
     const styleEl = document.createElement("style");
     styleEl.id = "a11y-overlay-styles";

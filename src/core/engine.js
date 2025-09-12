@@ -183,6 +183,15 @@ class A11yEngine {
    * @returns {Promise<Array<AnalysisResult>>}
    */
   async analyze(elements) {
+    // Load dependencies dynamically
+    if (!this._ruleEngine || !this._reporter) {
+      await this._initializeDependencies();
+    }
+
+    if (this._uiManager) {
+      await this._uiManager.initialize();
+    }
+
     const startTime = performance.now();
 
     try {

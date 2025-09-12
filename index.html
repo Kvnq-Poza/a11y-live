@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>A11y Live - UI Overhaul</title>
+    <meta
+      name="description"
+      content="Find and fix accessibility issues in real-time. A11y Live makes your website usable for everyone."
+    />
+
+    <link rel="stylesheet" href="assets/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <a class="skip-link" href="#main">Skip to content</a>
+
+      <header class="site-header" role="banner">
+        <div class="container nav-row">
+          <a class="brand" href="#" aria-label="A11y Live home">
+            <div class="title">A11y Live</div>
+          </a>
+
+          <nav aria-label="Primary navigation" id="primary-nav">
+            <ul>
+              <li><a href="#features">Features</a></li>
+              <li><a href="#how-it-works">How it Works</a></li>
+              <li><a href="#benefits">Benefits</a></li>
+            </ul>
+          </nav>
+
+          <div class="header-actions">
+            <button
+              class="nav-toggle"
+              aria-controls="primary-nav"
+              aria-expanded="false"
+              aria-label="Toggle menu"
+            >
+              ☰
+            </button>
+            <a class="btn btn-primary" href="demo.html">Try Live Demo</a>
+          </div>
+        </div>
+      </header>
+
+      <!-- HERO -->
+      <section class="hero" aria-labelledby="hero-heading">
+        <div class="container hero-grid">
+          <div class="hero-content">
+            <h1 id="hero-heading">
+              Find accessibility issues before your users do
+            </h1>
+            <p>
+              Real-time accessibility testing that helps you build websites
+              everyone can use.
+            </p>
+
+            <div class="hero-ctas">
+              <a class="btn btn-primary" href="demo.html">Try Live Demo</a>
+              <a class="btn btn-outline" href="#features">Learn More</a>
+            </div>
+          </div>
+
+          <div class="mockup" aria-hidden="true">
+            <div
+              class="screen"
+              role="img"
+              aria-label="Illustration showing A11y Live highlights on a sample page"
+            >
+              <div style="text-align: center; padding: 6px">
+                <div
+                  style="
+                    font-size: 18px;
+                    margin-bottom: 6px;
+                    color: var(--muted);
+                  "
+                >
+                  Live issue markers
+                </div>
+                <svg
+                  width="220"
+                  height="120"
+                  viewBox="0 0 220 120"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <rect
+                    x="6"
+                    y="8"
+                    width="208"
+                    height="96"
+                    rx="8"
+                    fill="#ffffff"
+                    stroke="rgba(15,23,36,0.04)"
+                  />
+                  <circle cx="44" cy="44" r="10" fill="#ef4444" />
+                  <circle cx="90" cy="60" r="8" fill="#f59e0b" />
+                  <circle cx="150" cy="36" r="8" fill="#0b55f5" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAIN -->
+      <main id="main" tabindex="-1">
+        <!-- FEATURES -->
+        <section id="features" class="container">
+          <div class="section-head">
+            <h2>Why choose A11y Live?</h2>
+            <p>
+              Stop guessing about accessibility. Get instant feedback and clear
+              fixes for real problems.
+            </p>
+          </div>
+
+          <div class="features-grid">
+            <article class="card" aria-labelledby="f1">
+              <div class="icon">🎯</div>
+              <h3 id="f1">Real-time Detection</h3>
+              <p>
+                Spots accessibility problems as you work. Instant, actionable
+                feedback so you can fix issues on the spot.
+              </p>
+            </article>
+
+            <article class="card" aria-labelledby="f2">
+              <div class="icon">🔍</div>
+              <h3 id="f2">Smart Visual Markers</h3>
+              <p>
+                See exactly where issues are with clear markers and highlights.
+                Click any marker to learn how to fix it.
+              </p>
+            </article>
+
+            <article class="card" aria-labelledby="f3">
+              <div class="icon">🛠️</div>
+              <h3 id="f3">Step-by-step Fixes</h3>
+              <p>
+                Clear instructions and concise code examples—no jargon. Fixes
+                you can implement immediately.
+              </p>
+            </article>
+
+            <article class="card" aria-labelledby="f4">
+              <div class="icon">📚</div>
+              <h3 id="f4">Learn as You Go</h3>
+              <p>
+                Understand the real user impact and the relevant WCAG guidance
+                for each issue.
+              </p>
+            </article>
+
+            <article class="card" aria-labelledby="f5">
+              <div class="icon">⚡</div>
+              <h3 id="f5">No Setup Required</h3>
+              <p>
+                Works on any website instantly—no installations or complex
+                configuration needed.
+              </p>
+            </article>
+
+            <article class="card" aria-labelledby="f6">
+              <div class="icon">📱</div>
+              <h3 id="f6">Mobile Friendly</h3>
+              <p>
+                Test across devices with a responsive UI and mobile-focused
+                checks.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <!-- HOW IT WORKS -->
+        <section id="how-it-works" class="container">
+          <div class="section-head">
+            <h2>How it works</h2>
+            <p>Three simple steps to better accessibility</p>
+          </div>
+
+          <div class="steps">
+            <div class="step" role="group" aria-labelledby="s1">
+              <div class="num">1</div>
+              <div>
+                <h3 id="s1">Add the Tool</h3>
+                <p>
+                  Add A11y Live to your site and it starts checking right away.
+                </p>
+              </div>
+            </div>
+
+            <div class="step" role="group" aria-labelledby="s2">
+              <div class="num">2</div>
+              <div>
+                <h3 id="s2">Review Issues</h3>
+                <p>
+                  Open the panel to inspect issues, see where they are, and why
+                  they matter.
+                </p>
+              </div>
+            </div>
+
+            <div class="step" role="group" aria-labelledby="s3">
+              <div class="num">3</div>
+              <div>
+                <h3 id="s3">Make Fixes</h3>
+                <p>
+                  Follow short, actionable steps to fix problems and watch them
+                  disappear.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- BENEFITS -->
+        <section id="benefits" class="container">
+          <div class="benefits">
+            <h3 style="margin-top: 0">What you get</h3>
+            <ul style="list-style: none; padding: 0; margin: 12px 0 0">
+              <li>
+                <div class="check">✓</div>
+                <span style="color: var(--text); font-weight: 600"
+                  >Catch issues before users encounter them</span
+                >
+              </li>
+              <li>
+                <div class="check">✓</div>
+                <span style="color: var(--text); font-weight: 600"
+                  >Meet WCAG 2.1 accessibility standards</span
+                >
+              </li>
+              <li>
+                <div class="check">✓</div>
+                <span style="color: var(--text); font-weight: 600"
+                  >Improve user experience for everyone</span
+                >
+              </li>
+              <li>
+                <div class="check">✓</div>
+                <span style="color: var(--text); font-weight: 600"
+                  >Reduce legal risks and compliance issues</span
+                >
+              </li>
+              <li>
+                <div class="check">✓</div>
+                <span style="color: var(--text); font-weight: 600"
+                  >Learn accessibility best practices</span
+                >
+              </li>
+              <li>
+                <div class="check">✓</div>
+                <span style="color: var(--text); font-weight: 600"
+                  >Save time with automated detection</span
+                >
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="container">
+          <div class="cta-block">
+            <h2 style="margin: 0">Ready to make your website accessible?</h2>
+            <p>
+              Try A11y Live now and see how easy accessibility testing can be.
+            </p>
+            <div
+              style="
+                display: flex;
+                gap: 12px;
+                flex-wrap: wrap;
+                justify-content: center;
+              "
+            >
+              <a class="btn btn-primary" href="demo.html">Start Demo</a>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container footer-grid">
+        <div>
+          <h4>A11y Live</h4>
+          <p style="color: var(--muted); margin-top: 8px">
+            Making the web accessible for everyone, one website at a time.
+          </p>
+        </div>
+        <div>
+          <h4>Product</h4>
+          <p style="margin: 0"><a href="#features">Features</a></p>
+          <p style="margin: 0"><a href="demo.html">Demo</a></p>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <p style="margin: 0">
+            <a href="https://www.w3.org/WAI/WCAG21/quickref/"
+              >WCAG Guidelines</a
+            >
+          </p>
+          <p style="margin: 0"><a href="https://webaim.org/">WebAIM</a></p>
+        </div>
+      </div>
+
+      <div class="container footer-bottom">
+        <div id="footer-year">
+          &copy; <span id="year"></span> A11y Live. Built to make the web better
+          for everyone.
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/script.js"></script>
+  </body>
+</html>

@@ -96,6 +96,7 @@ class A11yEngine {
   async start(overrideOptions = {}) {
     if (this._isStarted) {
       if (this._uiManager) {
+        await this._analyzeCurrentPage();
         this._uiManager.showPanel();
         console.log("📂 A11y Live panel reopened");
       } else {

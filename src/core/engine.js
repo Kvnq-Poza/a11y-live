@@ -118,15 +118,11 @@ class A11yEngine {
 
       // Load dependencies dynamically
       if (!this._ruleEngine || !this._reporter) {
-        await this._initializeDependencies();
+        await this._initializeDependenciesAndUI();
       }
 
       this.options.target = this.options.target || document.body;
       this._setupMutationObserver();
-
-      if (this._uiManager) {
-        await this._uiManager.initialize();
-      }
 
       await this._analyzeCurrentPage();
       this._isStarted = true;
@@ -189,11 +185,7 @@ class A11yEngine {
   async analyze(elements) {
     // Load dependencies dynamically
     if (!this._ruleEngine || !this._reporter) {
-      await this._initializeDependencies();
-    }
-
-    if (this._uiManager) {
-      await this._uiManager.initialize();
+      await this._initializeDependenciesAndUI();
     }
 
     const startTime = performance.now();

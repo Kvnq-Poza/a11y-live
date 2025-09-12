@@ -59,8 +59,13 @@ class Panel {
       .a11y-detail-section { margin-bottom: 1.5rem; }
       .a11y-detail-section h3 { font-size: 0.875rem; font-weight: 600; text-transform: uppercase; color: #6b7280; margin-bottom: 0.75rem; }
       .a11y-detail-section p, .a11y-detail-section ul { font-size: 0.875rem; line-height: 1.5; color: #374151; }
-      .a11y-code-block { background-color: #1f2937; color: #f3f4f6; padding: 1rem; border-radius: 0.5rem; font-family: "Courier New", monospace; font-size: 0.875rem; white-space: pre-wrap; word-break: break-all; }
+      .a11y-code-block { position: relative; background-color: #1f2937; color: #f3f4f6; padding: 1.5rem 1rem; border-radius: 0.5rem; font-family: "Courier New", monospace; font-size: 0.875rem; }
+      .a11y-code-block button.copy-btn { position: absolute; top: 0.5rem; right: 0.5rem; background: #374151; color: #f9fafb; border: none; border-radius: 0.375rem; padding: 0.25rem 0.5rem; font-size: 0.75rem; cursor: pointer; }
+      .a11y-code-block button.copy-btn.copied { background: #16a34a; }
+      .a11y-code-block pre { white-space: pre-line; word-break: break-all; }
       .a11y-empty-state { text-align: center; padding: 2rem; color: #6b7280; }
+      .a11y-detail-section ul.resources-links { padding: 0; }
+      .a11y-detail-section .resources-links li { word-break: break-all; }
     `;
     const styleElement = document.createElement("style");
     styleElement.id = "a11y-panel-styles";
@@ -223,7 +228,10 @@ class Panel {
       .map(
         (s) => `
         <p>${s.action ?? "Fix"}:</p>
-        <div class="a11y-code-block">${this._escapeHtml(s.code ?? "")}</div>
+        <div class="a11y-code-block" data-code-block>
+          <button class="copy-btn" aria-label="Copy code">Copy</button>
+          <pre>${this._escapeHtml(s.code ?? "")}</pre>
+        </div>
       `
       )
       .join("");
@@ -258,9 +266,10 @@ class Panel {
     </div>
     <div class="a11y-detail-section">
         <h3>Element</h3>
-        <div class="a11y-code-block">${this._escapeHtml(
-          v.selector ?? "N/A"
-        )}</div>
+        <div class="a11y-code-block" data-code-block>
+          <button class="copy-btn" aria-label="Copy code">Copy</button>
+          <pre>${this._escapeHtml(v.selector ?? "N/A")}</pre>
+        </div>
     </div>
     <div class="a11y-detail-section">
         <h3>User Impact</h3>
@@ -273,9 +282,33 @@ class Panel {
     <div class="a11y-detail-section">
         <h3>Learn More</h3>
         <p>${v.learnMore?.explanation ?? "No further information."}</p>
-        <ul>${resourcesHTML}</ul>
+        <ul class="resources-links">${resourcesHTML}</ul>
     </div>
   `;
+
+    this._setupCopyButtons(detailEl);
+  }
+
+  _setupCopyButtons(container) {
+    container.querySelectorAll(".a11y-code-block").forEach((block) => {
+      const button = block.querySelector(".copy-btn");
+      const code = block.querySelector("pre")?.textContent ?? "";
+      if (!button) return;
+
+      button.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(code);
+          button.textContent = "Copied";
+          button.classList.add("copied");
+          setTimeout(() => {
+            button.textContent = "Copy";
+            button.classList.remove("copied");
+          }, 1500);
+        } catch (err) {
+          console.error("Failed to copy code", err);
+        }
+      });
+    });
   }
 
   _escapeHtml(str) {
@@ -283,7 +316,7 @@ class Panel {
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
+      .replace(/\"/g, "&quot;")
       .replace(/'/g, "&#039;");
   }
 

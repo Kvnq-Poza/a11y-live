@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="/assets/theme.css" />
   </head>
   <body>
-    <!-- Skip navigation link for accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <header class="header">
@@ -39,7 +38,6 @@
         </p>
       </section>
 
-      <!-- Stats Section -->
       <div class="stats" id="stats-section">
         <div class="stat-card stat-errors">
           <div class="stat-number" id="error-count">0</div>
@@ -59,7 +57,6 @@
         </div>
       </div>
 
-      <!-- Demo Section -->
       <section class="demo-section">
         <div class="demo-header">
           <h2 class="demo-title">Interactive Test Examples</h2>
@@ -74,7 +71,6 @@
           </p>
 
           <div class="test-examples">
-            <!-- Image without alt text -->
             <div class="test-card" data-demo="missing-alt">
               <h3 class="test-card-title">Missing Alt Text</h3>
               <div class="missing-alt">
@@ -88,7 +84,6 @@
               </div>
             </div>
 
-            <!-- Form without label -->
             <div class="test-card" data-demo="missing-label">
               <h3 class="test-card-title">Missing Form Label</h3>
               <div class="form-group">
@@ -101,7 +96,6 @@
               </div>
             </div>
 
-            <!-- Low contrast text -->
             <div class="test-card" data-demo="low-contrast">
               <h3 class="test-card-title">Poor Color Contrast</h3>
               <div class="bad-contrast">
@@ -112,7 +106,6 @@
               </div>
             </div>
 
-            <!-- Empty link -->
             <div class="test-card" data-demo="empty-link">
               <h3 class="test-card-title">Empty Link</h3>
               <p>
@@ -121,7 +114,64 @@
               </p>
             </div>
 
-            <!-- Missing focus indicator -->
+            <!-- <div class="test-card" data-demo="empty-button">
+              <h3 class="test-card-title">Empty Button</h3>
+              <p>
+                This button has no text and no accessible label, making it
+                unintelligible to screen readers.
+              </p>
+              <button class="btn btn-primary"></button>
+            </div> -->
+
+            <div class="test-card" data-demo="heading-structure">
+              <h3 class="test-card-title">Improper Heading Structure</h3>
+              <h5 style="margin-top: 0.5rem">This H5 skips a level</h5>
+              <p>
+                This section jumps from an H3 (the card title) to an H5, which
+                is confusing for screen reader navigation.
+              </p>
+            </div>
+
+            <div class="test-card" data-demo="table-headers">
+              <h3 class="test-card-title">Table Missing Headers</h3>
+              <p>
+                This data table uses `&lt;td&gt;` for headers instead of
+                `&lt;th&gt;`.
+              </p>
+              <table
+                style="
+                  width: 100%;
+                  border-collapse: collapse;
+                  margin-top: 0.5rem;
+                  border: 1px solid #e2e8f0;
+                "
+              >
+                <thead>
+                  <tr style="border-bottom: 1px solid #e2e8f0">
+                    <td style="padding: 0.5rem; font-weight: bold">Product</td>
+                    <td style="padding: 0.5rem; font-weight: bold">Price</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-bottom: 1px solid #e2e8f0">
+                    <td style="padding: 0.5rem">Widget</td>
+                    <td style="padding: 0.5rem">$19.99</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- <div class="test-card" data-demo="invalid-aria">
+              <h3 class="test-card-title">Invalid ARIA Attribute</h3>
+              <div aria-hidden="maybe">
+                This content has an invalid `aria-hidden` value.
+              </div>
+              <p>
+                The `aria-hidden` attribute must be 'true' or 'false', not
+                'maybe'.
+              </p>
+            </div> -->
+
             <div class="test-card" data-demo="no-focus">
               <h3 class="test-card-title">No Focus Indicator</h3>
               <button class="btn btn-secondary no-focus-indicator">
@@ -133,7 +183,6 @@
               </p>
             </div>
 
-            <!-- Good example -->
             <div class="test-card">
               <h3 class="test-card-title">Accessible Form</h3>
               <div class="form-group">
@@ -156,7 +205,6 @@
         </div>
       </section>
 
-      <!-- Instructions -->
       <section class="demo-section">
         <div class="demo-header">
           <h2 class="demo-title">How to Use A11y Live</h2>
@@ -188,7 +236,6 @@
       </section>
     </main>
 
-    <!-- A11y Live Core Scripts -->
     <script src="src/core/engine.js"></script>
     <script src="assets/demo.js"></script>
   </body>

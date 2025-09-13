@@ -546,12 +546,10 @@ class RuleEngine {
     ];
 
     for (const attr of ariaAttributes) {
-      // Check if attribute name is valid
       if (!validAriaAttrs.includes(attr.name)) {
         return false;
       }
 
-      // Validate specific attribute values
       if (!this._validateAriaValue(attr.name, attr.value, element)) {
         return false;
       }
@@ -564,54 +562,77 @@ class RuleEngine {
    * Validate ARIA attribute values
    */
   _validateAriaValue(attrName, value, element) {
-    const booleanAttrs = [
-      "aria-hidden",
-      "aria-expanded",
-      "aria-selected",
-      "aria-checked",
-      "aria-disabled",
-      "aria-required",
-      "aria-invalid",
-      "aria-atomic",
-      "aria-busy",
-      "aria-readonly",
-      "aria-multiline",
-      "aria-multiselectable",
-    ];
+    const booleanLikeAttrs = {
+      "aria-atomic": ["true", "false"],
+      "aria-busy": ["true", "false"],
+      "aria-disabled": ["true", "false"],
+      "aria-hidden": ["true", "false"],
+      "aria-invalid": ["true", "false"],
+      "aria-modal": ["true", "false"],
+      "aria-multiline": ["true", "false"],
+      "aria-multiselectable": ["true", "false"],
+      "aria-readonly": ["true", "false"],
+      "aria-required": ["true", "false"],
+      "aria-checked": ["true", "false", "mixed"],
+      "aria-pressed": ["true", "false", "mixed"],
+      "aria-expanded": ["true", "false", "undefined"],
+      "aria-selected": ["true", "false", "undefined"],
+    };
 
-    const tristateBooleanAttrs = [
-      "aria-checked",
-      "aria-selected",
-      "aria-expanded",
-      "aria-pressed",
-    ];
-
-    if (booleanAttrs.includes(attrName)) {
-      const validValues = tristateBooleanAttrs.includes(attrName)
-        ? ["true", "false", "mixed"]
-        : ["true", "false"];
-      return validValues.includes(value.toLowerCase());
+    if (booleanLikeAttrs[attrName]) {
+      return booleanLikeAttrs[attrName].includes(value.toLowerCase());
     }
 
-    // ID reference attributes
+    const tokenAttrs = {
+      "aria-live": ["off", "polite", "assertive"],
+      "aria-current": [
+        "page",
+        "step",
+        "location",
+        "date",
+        "time",
+        "true",
+        "false",
+      ],
+      "aria-autocomplete": ["inline", "list", "both", "none"],
+      "aria-sort": ["ascending", "descending", "other", "none"],
+      "aria-orientation": ["horizontal", "vertical", "undefined"],
+      "aria-relevant": [
+        "additions",
+        "removals",
+        "text",
+        "all",
+        "additions text",
+      ],
+    };
+
+    if (tokenAttrs[attrName]) {
+      if (attrName === "aria-relevant") {
+        const values = value.toLowerCase().split(/\s+/);
+        return values.every((v) => tokenAttrs[attrName].includes(v));
+      }
+      return tokenAttrs[attrName].includes(value.toLowerCase());
+    }
+
     const idRefAttrs = [
       "aria-labelledby",
       "aria-describedby",
       "aria-controls",
       "aria-flowto",
       "aria-owns",
+      "aria-activedescendant",
     ];
     if (idRefAttrs.includes(attrName)) {
+      if (!value || value.trim() === "") return false;
       const ids = value.trim().split(/\s+/);
       return ids.every((id) => document.getElementById(id) !== null);
     }
 
-    // Non-empty string attributes
     if (attrName === "aria-label") {
       return value.trim().length > 0;
     }
 
-    return true; // Default to valid for other attributes
+    return true; // Default to valid
   }
 
   /**

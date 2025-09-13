@@ -82,7 +82,7 @@ class Panel {
     this.panelElement.setAttribute("hidden", "true");
     this.panelElement.innerHTML = `
       <header class="a11y-panel-header">
-        <h2 id="a11y-panel-title">Accessibility Issues</h2>
+        <h1 id="a11y-panel-title">Accessibility Issues</h1>
         <div class="a11y-panel-controls">
           <button id="a11y-help-btn" aria-label="Open Tutorial">?</button>
           <button id="a11y-close-btn" aria-label="Close Panel">X</button>
@@ -91,6 +91,7 @@ class Panel {
       <main class="a11y-panel-main">
         <section class="a11y-sidebar">
           <div class="a11y-toolbar">
+          <label for="a11y-search">Search</label>
             <input type="search" id="a11y-search" class="a11y-search-input" placeholder="Search issues...">
             <div class="a11y-filter-group">
               <button class="a11y-filter-button active" data-filter="all">All</button>

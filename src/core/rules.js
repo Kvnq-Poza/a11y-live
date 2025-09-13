@@ -682,8 +682,6 @@ class RuleEngine {
       return true;
     }
 
-    // Simple data table detection
-    const rows = element.querySelectorAll("tr");
     const cells = element.querySelectorAll("td, th");
 
     // If table has very few cells, might be layout

@@ -538,7 +538,7 @@ This tool is designed to be extensible. Areas for contribution:
 
 ```bash
 # Clone repository
-git clone [repository-url]
+git clone https://github.com/Kvnq-Poza/a11y-live.git
 
 # Install dependencies (if using package manager)
 npm install

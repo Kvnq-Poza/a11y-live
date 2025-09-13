@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A11y Live Demo - Real-time Accessibility Testing</title>
+    <link rel="stylesheet" href="/assets/demo.css" />
+    <link rel="stylesheet" href="/assets/theme.css" />
+  </head>
+  <body>
+    <!-- Skip navigation link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header class="header">
+      <div class="header-content">
+        <a href="#" class="logo"> A11y Live </a>
+        <div class="header-actions">
+          <div class="status" id="status">
+            <div class="status-dot"></div>
+            <span>Ready</span>
+          </div>
+          <button class="btn btn-secondary" id="tutorial-btn">
+            Start Tutorial
+          </button>
+          <button class="btn btn-primary" id="start-btn">Start Testing</button>
+          <button class="btn btn-danger" id="stop-btn" style="display: none">
+            Stop Testing
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="main" id="main-content">
+      <section class="hero">
+        <h1 class="hero-title">Real-time Accessibility Testing</h1>
+        <p class="hero-subtitle">
+          Test your websites for accessibility issues as you build. A11y Live
+          finds problems instantly and shows you how to fix them.
+        </p>
+      </section>
+
+      <!-- Stats Section -->
+      <div class="stats" id="stats-section">
+        <div class="stat-card stat-errors">
+          <div class="stat-number" id="error-count">0</div>
+          <div class="stat-label">Errors</div>
+        </div>
+        <div class="stat-card stat-warnings">
+          <div class="stat-number" id="warning-count">0</div>
+          <div class="stat-label">Warnings</div>
+        </div>
+        <div class="stat-card stat-info">
+          <div class="stat-number" id="total-count">0</div>
+          <div class="stat-label">Total Issues</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="elements-count">0</div>
+          <div class="stat-label">Elements Checked</div>
+        </div>
+      </div>
+
+      <!-- Demo Section -->
+      <section class="demo-section">
+        <div class="demo-header">
+          <h2 class="demo-title">Interactive Test Examples</h2>
+          <button class="btn btn-secondary" id="analyze-examples">
+            Analyze These Examples
+          </button>
+        </div>
+        <div class="demo-content">
+          <p>
+            Below are common accessibility problems. Click "Analyze These
+            Examples" to see how A11y Live catches them:
+          </p>
+
+          <div class="test-examples">
+            <!-- Image without alt text -->
+            <div class="test-card" data-demo="missing-alt">
+              <h3 class="test-card-title">Missing Alt Text</h3>
+              <div class="missing-alt">
+                <img
+                  src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDE1MCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxNTAiIGhlaWdodD0iMTAwIiBmaWxsPSIjRTVFN0VCIi8+CjxwYXRoIGQ9Ik02MCA0MEw5MCA3MEw2MCA3MEw2MCA0MFoiIGZpbGw9IiM5Q0EzQUYiLz4KPGZ0IGQ9Ik00MCA2MEw2MCA0MEw4MCA2MEw2MCA4MEw0MCA2MFoiIGZpbGw9IiM2Qjc3ODAiLz4KPC9zdmc+"
+                />
+                <p>
+                  This image has no alt text, making it inaccessible to screen
+                  readers.
+                </p>
+              </div>
+            </div>
+
+            <!-- Form without label -->
+            <div class="test-card" data-demo="missing-label">
+              <h3 class="test-card-title">Missing Form Label</h3>
+              <div class="form-group">
+                <input
+                  type="email"
+                  class="form-input"
+                  placeholder="Enter your email"
+                />
+                <p>This input field has no proper label, only a placeholder.</p>
+              </div>
+            </div>
+
+            <!-- Low contrast text -->
+            <div class="test-card" data-demo="low-contrast">
+              <h3 class="test-card-title">Poor Color Contrast</h3>
+              <div class="bad-contrast">
+                <p>
+                  This text has very poor contrast and is hard to read for users
+                  with visual impairments.
+                </p>
+              </div>
+            </div>
+
+            <!-- Empty link -->
+            <div class="test-card" data-demo="empty-link">
+              <h3 class="test-card-title">Empty Link</h3>
+              <p>
+                Here's a <a href="#" class="empty-link"></a> link with no text
+                content. Screen readers can't tell users where it goes.
+              </p>
+            </div>
+
+            <!-- Missing focus indicator -->
+            <div class="test-card" data-demo="no-focus">
+              <h3 class="test-card-title">No Focus Indicator</h3>
+              <button class="btn btn-secondary no-focus-indicator">
+                Button Without Focus Ring
+              </button>
+              <p>
+                This button removes focus indicators, making keyboard navigation
+                difficult.
+              </p>
+            </div>
+
+            <!-- Good example -->
+            <div class="test-card">
+              <h3 class="test-card-title">Accessible Form</h3>
+              <div class="form-group">
+                <label for="accessible-email" class="form-label"
+                  >Email Address</label
+                >
+                <input
+                  type="email"
+                  id="accessible-email"
+                  class="form-input"
+                  aria-describedby="email-help"
+                />
+                <small id="email-help"
+                  >We'll never share your email with anyone else.</small
+                >
+              </div>
+              <p>This form has proper labels and descriptions.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Instructions -->
+      <section class="demo-section">
+        <div class="demo-header">
+          <h2 class="demo-title">How to Use A11y Live</h2>
+        </div>
+        <div class="demo-content">
+          <ol style="padding-left: 1.5rem; line-height: 1.8">
+            <li>
+              <strong>Click "Start Tutorial"</strong> for a guided tour of all
+              features
+            </li>
+            <li>
+              <strong>Click "Start Testing"</strong> to begin real-time
+              accessibility monitoring
+            </li>
+            <li>
+              <strong>Look for red dots</strong> on problematic elements - click
+              them to see details
+            </li>
+            <li>
+              <strong>Use the panel</strong> on the right to explore issues and
+              get fix suggestions
+            </li>
+            <li>
+              <strong>Filter and search</strong> to focus on specific types of
+              problems
+            </li>
+          </ol>
+        </div>
+      </section>
+    </main>
+
+    <!-- A11y Live Core Scripts -->
+    <script src="src/core/engine.js"></script>
+    <script src="assets/demo.js"></script>
+  </body>
+</html>

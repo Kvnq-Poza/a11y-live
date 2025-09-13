@@ -110,8 +110,7 @@ class RuleEngine {
         severity: "error",
         category: "keyboard",
         tags: ["focus", "keyboard", "navigation"],
-        selector:
-          'a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        selector: 'a, button, [role="button"], [tabindex]:not([tabindex="-1"])',
         test: (element) => this._hasFocusIndicator(element),
         message: "Interactive element lacks visible focus indicator",
         suggestion: "Add :focus styles with clear visual indication",

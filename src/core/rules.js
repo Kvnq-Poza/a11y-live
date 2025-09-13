@@ -639,43 +639,28 @@ class RuleEngine {
    * Check if element has accessible text content
    */
   _hasAccessibleText(element) {
-    // Check aria-label first
-    if (element.getAttribute("aria-label")) {
-      return element.getAttribute("aria-label").trim().length > 0;
-    }
+    if (element.getAttribute("aria-label")?.trim()) return true;
 
-    // Check aria-labelledby
     if (element.getAttribute("aria-labelledby")) {
       const labelIds = element.getAttribute("aria-labelledby").split(/\s+/);
       for (const id of labelIds) {
         const labelElement = document.getElementById(id);
-        if (labelElement && labelElement.textContent.trim()) {
+        if (labelElement && labelElement.textContent?.trim()) {
           return true;
         }
       }
     }
 
-    // Check text content
-    const textContent = element.textContent || element.innerText || "";
-    if (textContent.trim().length > 0) {
-      return true;
-    }
+    // Use textContent, not innerText
+    const visibleText = (element.textContent || "").replace(/\s+/g, "").trim();
+    if (visibleText.length > 0) return true;
 
-    // For inputs, check value attribute
-    if (element.tagName === "INPUT" && element.value && element.value.trim()) {
-      return true;
-    }
+    if (element.tagName === "INPUT" && element.value?.trim()) return true;
 
-    // Check for image alt text in buttons
     const img = element.querySelector("img[alt]");
-    if (img && img.alt.trim()) {
-      return true;
-    }
+    if (img && img.alt?.trim()) return true;
 
-    // Check title attribute as fallback
-    if (element.title && element.title.trim()) {
-      return true;
-    }
+    if (element.title?.trim()) return true;
 
     return false;
   }

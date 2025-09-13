@@ -456,21 +456,51 @@ class RuleEngine {
    * Check if element has visible focus indicator
    */
   _hasFocusIndicator(element) {
-    // This is a simplified check - in reality, we'd need to simulate focus
-    const styles = window.getComputedStyle(element);
-
-    // Check for custom focus styles
-    if (styles.outlineStyle !== "none" || styles.outlineWidth !== "0px") {
+    if (!this._isElementVisible(element) || element.disabled) {
       return true;
     }
 
-    // Check for box-shadow focus indicators
-    if (styles.boxShadow !== "none") {
-      return true;
+    const unfocusedStyles = window.getComputedStyle(element);
+    const activeElement = document.activeElement;
+    const wasAlreadyActive = activeElement === element;
+
+    if (!wasAlreadyActive) {
+      element.focus({ preventScroll: true });
     }
 
-    // For now, assume elements have focus indicators if they're not explicitly removed
-    return true;
+    const focusedStyles = window.getComputedStyle(element);
+
+    if (!wasAlreadyActive) {
+      if (activeElement && typeof activeElement.focus === "function") {
+        activeElement.focus({ preventScroll: true });
+      } else {
+        element.blur();
+      }
+    }
+
+    const hasOutline =
+      focusedStyles.outlineStyle !== "none" &&
+      parseFloat(focusedStyles.outlineWidth) > 0;
+    if (hasOutline) return true;
+
+    const hasBoxShadow =
+      focusedStyles.boxShadow !== "none" &&
+      focusedStyles.boxShadow !== unfocusedStyles.boxShadow;
+    const hasBgChange =
+      focusedStyles.backgroundColor !== unfocusedStyles.backgroundColor;
+    const hasBorderChange = focusedStyles.border !== unfocusedStyles.border;
+    const hasTextDecoration =
+      focusedStyles.textDecorationLine !== "none" &&
+      focusedStyles.textDecorationLine !== unfocusedStyles.textDecorationLine;
+    const hasColorChange = focusedStyles.color !== unfocusedStyles.color;
+
+    return (
+      hasBoxShadow ||
+      hasBgChange ||
+      hasBorderChange ||
+      hasTextDecoration ||
+      hasColorChange
+    );
   }
 
   /**

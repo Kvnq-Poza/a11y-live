@@ -3,7 +3,7 @@
  *
  * Manages highlighting elements on the page that have accessibility violations.
  * It creates a visual overlay and a tooltip to identify the problematic element
- * and the nature of the issue.
+ * and the nature of the issue. Markers now stay attached to elements during scroll.
  */
 class Overlay {
   constructor(uiManager) {
@@ -11,6 +11,9 @@ class Overlay {
     this.highlightEl = null;
     this.tooltipEl = null;
     this.markers = new Map(); // Store markers for all issues
+    this.scrollHandler = null;
+    this.resizeHandler = null;
+    this.isUpdatingMarkers = false;
   }
 
   initialize() {
@@ -27,6 +30,9 @@ class Overlay {
     this.highlightEl.appendChild(this.tooltipEl);
 
     document.body.appendChild(this.highlightEl);
+
+    // Set up scroll and resize handlers to keep markers in sync
+    this._setupEventHandlers();
   }
 
   _injectStyles() {
@@ -70,15 +76,114 @@ class Overlay {
                 z-index: 2147483645;
                 cursor: pointer;
                 pointer-events: all;
+                transition: opacity 0.2s ease-in-out;
             }
             .a11y-issue-marker.error { background-color: #ef4444; }
             .a11y-issue-marker.warning { background-color: #f59e0b; }
             .a11y-issue-marker.info { background-color: #0b55f5; }
+            .a11y-issue-marker.hidden { opacity: 0; pointer-events: none; }
         `;
     const styleEl = document.createElement("style");
     styleEl.id = "a11y-overlay-styles";
     styleEl.textContent = styles;
     document.head.appendChild(styleEl);
+  }
+
+  /**
+   * Sets up event handlers for scroll and resize to keep markers in sync
+   */
+  _setupEventHandlers() {
+    // Throttled scroll handler to update marker positions
+    this.scrollHandler = this._throttle(() => {
+      if (!this.isUpdatingMarkers) {
+        this._updateMarkerPositions();
+      }
+    }, 16); // ~60fps
+
+    // Throttled resize handler
+    this.resizeHandler = this._throttle(() => {
+      if (!this.isUpdatingMarkers) {
+        this._updateMarkerPositions();
+      }
+    }, 100);
+
+    // Listen to scroll events on window and any scrollable containers
+    window.addEventListener("scroll", this.scrollHandler, { passive: true });
+    window.addEventListener("resize", this.resizeHandler, { passive: true });
+
+    // Also listen for scroll events on any scrollable elements
+    document.addEventListener("scroll", this.scrollHandler, {
+      passive: true,
+      capture: true,
+    });
+  }
+
+  /**
+   * Throttle function to limit the frequency of function calls
+   */
+  _throttle(func, limit) {
+    let inThrottle;
+    return function () {
+      const args = arguments;
+      const context = this;
+      if (!inThrottle) {
+        func.apply(context, args);
+        inThrottle = true;
+        setTimeout(() => (inThrottle = false), limit);
+      }
+    };
+  }
+
+  /**
+   * Updates marker positions for all currently visible markers
+   */
+  _updateMarkerPositions() {
+    for (const [key, markerData] of this.markers.entries()) {
+      const { marker, violation } = markerData;
+      const element = document.querySelector(violation.selector);
+
+      if (element && this._isElementVisible(element)) {
+        this._positionMarker(marker, element);
+        marker.classList.remove("hidden");
+      } else {
+        // Hide marker if element is not visible or doesn't exist
+        marker.classList.add("hidden");
+      }
+    }
+  }
+
+  /**
+   * Checks if an element is visible in the viewport
+   */
+  _isElementVisible(element) {
+    const rect = element.getBoundingClientRect();
+    const windowHeight =
+      window.innerHeight || document.documentElement.clientHeight;
+    const windowWidth =
+      window.innerWidth || document.documentElement.clientWidth;
+
+    return (
+      rect.bottom >= 0 &&
+      rect.right >= 0 &&
+      rect.top <= windowHeight &&
+      rect.left <= windowWidth &&
+      rect.width > 0 &&
+      rect.height > 0
+    );
+  }
+
+  /**
+   * Positions a marker relative to its target element
+   */
+  _positionMarker(marker, element) {
+    const rect = element.getBoundingClientRect();
+    const markerSize = 12;
+
+    // Position marker at the top-left corner of the element
+    // Use fixed positioning to stay relative to viewport
+    marker.style.position = "fixed";
+    marker.style.top = `${rect.top - markerSize / 2}px`;
+    marker.style.left = `${rect.left - markerSize / 2}px`;
   }
 
   /**
@@ -107,53 +212,66 @@ class Overlay {
 
   /**
    * Updates the small dot markers for all current violations.
-   * Ensures each violation has its own marker, placed correctly and clickable.
+   * Ensures each violation has its own marker, positioned correctly and staying with elements.
    * @param {Array} results - The list of all current violations.
    */
   updateMarkers(results) {
+    this.isUpdatingMarkers = true;
+
     // Build a set of active keys (selector::ruleId)
     const activeKeys = new Set(
       results.map((r) => `${r.selector}::${r.ruleId}`)
     );
 
     // Remove old markers no longer in results
-    for (const [key, marker] of this.markers.entries()) {
+    for (const [key, markerData] of this.markers.entries()) {
       if (!activeKeys.has(key)) {
-        marker.remove();
+        markerData.marker.remove();
         this.markers.delete(key);
       }
     }
 
     // Add or update markers
     results.forEach((violation) => {
-      const el = document.querySelector(violation.selector);
-      if (!el) return;
+      const element = document.querySelector(violation.selector);
+      if (!element) return;
 
       const key = `${violation.selector}::${violation.ruleId}`;
-      let marker = this.markers.get(key);
+      let markerData = this.markers.get(key);
 
-      if (!marker) {
-        marker = document.createElement("div");
+      if (!markerData) {
+        const marker = document.createElement("div");
         marker.className = `a11y-issue-marker ${violation.severity}`;
         marker.title = violation.name;
         document.body.appendChild(marker);
-        this.markers.set(key, marker);
+
+        markerData = { marker, violation };
+        this.markers.set(key, markerData);
 
         marker.addEventListener("click", (e) => {
           e.stopPropagation();
           this.uiManager.showPanel();
           this.uiManager.panel.selectedViolation = violation;
           this.uiManager.panel._render();
-          this.highlight(el, violation);
+          this.highlight(element, violation);
         });
+      } else {
+        // Update existing marker data in case violation details changed
+        markerData.violation = violation;
+        markerData.marker.title = violation.name;
+        markerData.marker.className = `a11y-issue-marker ${violation.severity}`;
       }
 
-      // Position marker relative to viewport + scroll
-      const rect = el.getBoundingClientRect();
-      const markerSize = 12;
-      marker.style.top = `${window.scrollY + rect.top - markerSize / 2}px`;
-      marker.style.left = `${window.scrollX + rect.left - markerSize / 2}px`;
+      // Position the marker
+      if (this._isElementVisible(element)) {
+        this._positionMarker(markerData.marker, element);
+        markerData.marker.classList.remove("hidden");
+      } else {
+        markerData.marker.classList.add("hidden");
+      }
     });
+
+    this.isUpdatingMarkers = false;
   }
 
   /**
@@ -164,11 +282,20 @@ class Overlay {
   }
 
   cleanup() {
+    // Remove event listeners
+    if (this.scrollHandler) {
+      window.removeEventListener("scroll", this.scrollHandler);
+      window.removeEventListener("resize", this.resizeHandler);
+      document.removeEventListener("scroll", this.scrollHandler, true);
+    }
+
+    // Clean up elements
     if (this.highlightEl) this.highlightEl.remove();
-    for (const marker of this.markers.values()) {
-      marker.remove();
+    for (const markerData of this.markers.values()) {
+      markerData.marker.remove();
     }
     this.markers.clear();
+
     const styles = document.getElementById("a11y-overlay-styles");
     if (styles) styles.remove();
   }

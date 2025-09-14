@@ -780,30 +780,51 @@ class RuleEngine {
    * Generate CSS selector for element
    */
   _getElementSelector(element) {
+    // If element has an ID, use it
     if (element.id) {
-      return `#${element.id}`;
+      return `#${CSS.escape(element.id)}`;
     }
 
-    let selector = element.tagName.toLowerCase();
+    // Build a path from root to element
+    const path = [];
+    let current = element;
 
-    if (element.className) {
-      const classes = element.className.split(" ").filter((c) => c.trim());
-      if (classes.length > 0) {
-        selector += "." + classes.join(".");
+    while (
+      current &&
+      current !== document.body &&
+      current !== document.documentElement
+    ) {
+      let selector = current.tagName.toLowerCase();
+
+      // Add class information if available
+      if (current.className && typeof current.className === "string") {
+        const classes = current.className
+          .trim()
+          .split(/\s+/)
+          .filter((c) => c);
+        if (classes.length > 0) {
+          selector += "." + classes.map((c) => CSS.escape(c)).join(".");
+        }
       }
+
+      // Add nth-child for specificity if needed
+      const parent = current.parentElement;
+      if (parent) {
+        const siblings = Array.from(parent.children).filter(
+          (child) => child.tagName === current.tagName
+        );
+
+        if (siblings.length > 1) {
+          const index = siblings.indexOf(current) + 1;
+          selector += `:nth-of-type(${index})`;
+        }
+      }
+
+      path.unshift(selector);
+      current = current.parentElement;
     }
 
-    // Add position if needed for uniqueness
-    const siblings = Array.from(element.parentNode?.children || []).filter(
-      (el) => el.tagName === element.tagName
-    );
-
-    if (siblings.length > 1) {
-      const index = siblings.indexOf(element) + 1;
-      selector += `:nth-of-type(${index})`;
-    }
-
-    return selector;
+    return path.join(" > ") || element.tagName.toLowerCase();
   }
 
   /**

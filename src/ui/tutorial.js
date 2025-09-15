@@ -75,6 +75,7 @@ class Tutorial {
   _createTutorial() {
     this.tutorialEl = document.createElement("div");
     this.tutorialEl.className = "a11y-tutorial-backdrop";
+    this.tutorialEl.setAttribute("id", "a11y-tutorial-title");
     this.tutorialEl.setAttribute("role", "dialog");
     this.tutorialEl.setAttribute("aria-modal", "true");
     this.tutorialEl.setAttribute("aria-labelledby", "a11y-tutorial-title");

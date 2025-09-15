@@ -126,7 +126,7 @@ class RuleEngine {
         severity: "error",
         category: "aria",
         tags: ["aria", "attributes", "semantics"],
-        selector: "[aria-*]",
+        selector: "*",
         test: (element) => this._validateAriaAttributes(element),
         message: "Element has invalid or misused ARIA attributes",
         suggestion:

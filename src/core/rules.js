@@ -152,7 +152,7 @@ class RuleEngine {
       // Button Rules
       {
         id: "empty-buttons",
-        name: "Empty Buttons",
+        name: "Empty Button(s)",
         description: "Buttons must have accessible text or labels",
         wcag: "4.1.2",
         severity: "error",

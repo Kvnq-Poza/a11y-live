@@ -30,7 +30,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/a11y-live/a11y-live.git"
+    "url": "https://github.com/Kvnq-Poza/a11y-live.git"
   },
   "keywords": [
     "accessibility",
@@ -46,7 +46,7 @@
   ],
   "author": "James Alaribe",
   "bugs": {
-    "url": "https://github.com/a11y-live/a11y-live/issues"
+    "url": "https://github.com/Kvnq-Poza/a11y-live/issues"
   },
   "homepage": "https://a11y-live.js.org",
   "devDependencies": {

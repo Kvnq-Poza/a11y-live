@@ -543,6 +543,10 @@ class RuleEngine {
       "aria-pressed",
       "aria-haspopup",
       "aria-current",
+      "aria-modal",
+      "aria-details",
+      "aria-keyshortcuts",
+      "aria-roledescription",
     ];
 
     for (const attr of ariaAttributes) {

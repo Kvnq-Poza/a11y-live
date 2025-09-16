@@ -38,51 +38,62 @@ class Overlay {
   _injectStyles() {
     if (document.getElementById("a11y-overlay-styles")) return;
     const styles = `
-            #a11y-highlight {
-                position: absolute;
-                box-sizing: border-box;
-                border: 2px dashed red;
-                border-radius: 4px;
-                background-color: rgba(255, 0, 0, 0.1);
-                z-index: 2147483646;
-                pointer-events: none;
-                transition: all 0.2s ease-in-out;
-            }
-            #a11y-highlight.warning {
-                border-color: #f59e0b;
-                background-color: rgba(245, 158, 11, 0.1);
-            }
-            #a11y-tooltip {
-                position: absolute;
-                bottom: 100%;
-                left: 0;
-                margin-bottom: 5px;
-                background-color: #1f2937;
-                color: #fff;
-                padding: 0.5rem 0.75rem;
-                border-radius: 0.375rem;
-                font-size: 0.875rem;
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-                white-space: nowrap;
-                z-index: 1;
-            }
-             .a11y-issue-marker {
-                position: absolute;
-                width: 12px;
-                height: 12px;
-                border-radius: 50%;
-                border: 1px solid white;
-                box-shadow: 0 0 5px rgba(0,0,0,0.5);
-                z-index: 2147483645;
-                cursor: pointer;
-                pointer-events: all;
-                transition: opacity 0.2s ease-in-out;
-            }
-            .a11y-issue-marker.error { background-color: #ef4444; }
-            .a11y-issue-marker.warning { background-color: #f59e0b; }
-            .a11y-issue-marker.info { background-color: #0b55f5; }
-            .a11y-issue-marker.hidden { opacity: 0; pointer-events: none; }
-        `;
+#a11y-highlight{
+  position:absolute;
+  box-sizing:border-box;
+  border:2px dashed red;
+  border-radius:4px;
+  background-color:rgba(255,0,0,0.1);
+  z-index:2147483646;
+  pointer-events:none;
+  transition:all .2s ease-in-out;
+}
+#a11y-highlight.warning{
+  border-color:#f59e0b;
+  background-color:rgba(245,158,11,0.1);
+}
+#a11y-tooltip{
+  position:absolute;
+  bottom:100%;
+  left:0;
+  margin-bottom:5px;
+  background-color:#1f2937;
+  color:#fff;
+  padding:8px 12px;
+  border-radius:6px;
+  font-size:14px;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  white-space:nowrap;
+  z-index:1;
+  line-height:22px;
+}
+.a11y-issue-marker{
+  position:absolute;
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  border:1px solid #fff;
+  box-shadow:0 0 5px rgba(0,0,0,0.5);
+  z-index:2147483645;
+  cursor:pointer;
+  pointer-events:all;
+  transition:opacity .2s ease-in-out;
+}
+.a11y-issue-marker.error{
+  background-color:#ef4444;
+}
+.a11y-issue-marker.warning{
+  background-color:#f59e0b;
+}
+.a11y-issue-marker.info{
+  background-color:#0b55f5;
+}
+.a11y-issue-marker.hidden{
+  opacity:0;
+  pointer-events:none;
+}
+`;
+
     const styleEl = document.createElement("style");
     styleEl.id = "a11y-overlay-styles";
     styleEl.textContent = styles;

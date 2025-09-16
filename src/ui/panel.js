@@ -25,47 +25,49 @@ class Panel {
   _injectStyles() {
     if (document.getElementById("a11y-panel-styles")) return;
     const styles = `
-      .a11y-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
-      #a11y-live-panel { display:flex; flex-direction:column; position:fixed; right:1rem; bottom:1rem; width:450px; max-width:90vw; height:600px; max-height:70vh; background-color:#fff; border-radius:0.75rem; box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05); border:1px solid #e5e7eb; z-index:2147483647; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; color:#1f2937; transform:translateY(2rem); opacity:0; visibility:hidden; transition:transform .3s ease,opacity .3s ease,visibility 0s linear .3s; }
-      #a11y-live-panel.visible { transform:translateY(0); opacity:1; visibility:visible; transition:transform .3s ease,opacity .3s ease,visibility 0s; }
-      .a11y-panel-header { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.25rem; border-bottom: 1px solid #e5e7eb; background-color: #f9fafb; border-radius: 0.75rem 0.75rem 0 0; }
-      .a11y-panel-header h2 { font-size: 1.125rem; font-weight: 600; margin: 0; }
-      .a11y-panel-controls button { background: none; border: 1px solid transparent; border-radius: 0.375rem; padding: 0.5rem; cursor: pointer; color: #6b7280; transition: background-color .2s; }
-      .a11y-panel-controls button:hover { background-color: #f3f4f6; color: #1f2937; }
-      .a11y-panel-main { display: flex; flex: 1; overflow: hidden; }
-      .a11y-sidebar { width: 100%; border-right: 1px solid #e5e7eb; display: flex; flex-direction: column; transition: width .3s ease; }
-      .a11y-sidebar.collapsed { width: 0; }
-      .a11y-toolbar { padding: 0.75rem; border-bottom: 1px solid #e5e7eb; background-color: #f9fafb; }
-      .a11y-search-input { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem; }
-      .a11y-filter-group { display: flex; justify-content: space-around; margin-top: 0.5rem; }
-      .a11y-filter-button { flex: 1; background-color: #fff; border: 1px solid #d1d5db; padding: 0.375rem 0; font-size: 0.75rem; cursor: pointer; transition: background-color .2s; }
-      .a11y-filter-button:first-child { border-radius: 0.375rem 0 0 0.375rem; }
-      .a11y-filter-button:last-child { border-radius: 0 0.375rem 0.375rem 0; border-left: 0; }
-      .a11y-filter-button.active { background-color: #e5e7eb; font-weight: 600; }
-      .a11y-results-list { list-style: none; padding: 0; margin: 0; flex: 1; overflow-y: auto; }
-      .a11y-violation-item { padding: 1rem; border-bottom: 1px solid #f3f4f6; cursor: pointer; }
-      .a11y-violation-item:hover { background-color: #f9fafb; }
-      .a11y-violation-item.selected { background-color: #eff6ff; border-left: 4px solid #3b82f6; padding-left: calc(1rem - 4px); }
-      .a11y-violation-title { font-weight: 600; margin-bottom: 0.25rem; }
-      .a11y-violation-meta { font-size: 0.75rem; color: #6b7280; }
-      .a11y-detail-view { flex: 1; padding: 1.5rem; overflow-y: auto; background-color: #f9fafb; }
-      .a11y-detail-view.hidden { display: none; }
-      .a11y-detail-header { border-bottom: 1px solid #e5e7eb; padding-bottom: 1rem; margin-bottom: 1rem; }
-      .a11y-detail-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
-      .a11y-tag { display: inline-block; padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 500; border-radius: 9999px; margin-right: 0.5rem; }
-      .a11y-tag-error { background-color: #fee2e2; color: #991b1b; }
-      .a11y-tag-warning { background-color: #fef3c7; color: #92400e; }
-      .a11y-tag-wcag { background-color: #dbeafe; color: #1e40af; }
-      .a11y-detail-section { margin-bottom: 1.5rem; }
-      .a11y-detail-section h3 { font-size: 0.875rem; font-weight: 600; text-transform: uppercase; color: #6b7280; margin-bottom: 0.75rem; }
-      .a11y-detail-section p, .a11y-detail-section ul { font-size: 0.875rem; line-height: 1.5; color: #374151; }
-      .a11y-code-block { position: relative; background-color: #1f2937; color: #f3f4f6; padding: 1.5rem 1rem; border-radius: 0.5rem; font-family: "Courier New", monospace; font-size: 0.875rem; }
-      .a11y-code-block button.copy-btn { position: absolute; top: 0.5rem; right: 0.5rem; background: #374151; color: #f9fafb; border: none; border-radius: 0.375rem; padding: 0.25rem 0.5rem; font-size: 0.75rem; cursor: pointer; }
-      .a11y-code-block button.copy-btn.copied { background: #16a34a; }
-      .a11y-code-block pre { white-space: pre-line; word-break: break-all; }
-      .a11y-empty-state { text-align: center; padding: 2rem; color: #6b7280; }
-      .a11y-detail-section ul.resources-links { padding: 0; }
-      .a11y-detail-section .resources-links li { word-break: break-all; }
+      .a11y-sr-only { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border-width: 0 !important; }
+      #a11y-live-panel { display: flex !important; flex-direction: column !important; position: fixed !important; right: 16px !important; bottom: 16px !important; width: 450px !important; max-width: 90vw !important; height: 600px !important; max-height: 70vh !important; background-color: #fff !important; border-radius: 12px !important; box-shadow: 0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -2px rgba(0,0,0,.05) !important; border: 1px solid #e5e7eb !important; z-index: 2147483647 !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; color: #1f2937 !important; transform: translateY(32px) !important; opacity: 0 !important; visibility: hidden !important; transition: transform 0.3s ease, opacity 0.3s ease, visibility 0s linear 0.3s !important; }
+      #a11y-panel-title {font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;}
+      #a11y-live-panel.visible { transform: translateY(0) !important; opacity: 1 !important; visibility: visible !important; transition: transform 0.3s ease, opacity 0.3s ease, visibility 0s !important; }
+      .a11y-panel-header { display: flex !important; justify-content: space-between !important; align-items: center !important; padding: 12px 20px !important; border-bottom: 1px solid #e5e7eb !important; background-color: #f9fafb !important; border-radius: 12px 12px 0 0 !important; }
+      .a11y-panel-header h2 { font-size: 18px !important; font-weight: 600 !important; margin: 0 !important; line-height: 1.4 !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; color: #1f2937 !important; }
+      .a11y-panel-controls button { background: none !important; border: 1px solid transparent !important; border-radius: 6px !important; padding: 8px !important; cursor: pointer !important; color: #6b7280 !important; transition: background-color 0.2s !important; font-size: 14px !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; }
+      .a11y-panel-controls button:hover { background-color: #f3f4f6 !important; color: #1f2937 !important; }
+      .a11y-panel-main { display: flex !important; flex: 1 !important; overflow: hidden !important; }
+      .a11y-sidebar { width: 100%; border-right: 1px solid #e5e7eb !important; display: flex !important; flex-direction: column !important; transition: width 0.3s ease !important; }
+      .a11y-sidebar.collapsed { width: 0 !important; }
+      .a11y-toolbar { padding: 12px !important; border-bottom: 1px solid #e5e7eb !important; background-color: #f9fafb !important; }
+      .a11y-search-input { width: 100% !important; padding: 8px 12px !important; border: 1px solid #d1d5db !important; border-radius: 6px !important; font-size: 14px !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; color: #1f2937 !important; line-height: 1.4 !important; }
+      .a11y-filter-group { display: flex !important; justify-content: space-around !important; margin-top: 8px !important; }
+      .a11y-filter-button { flex: 1 !important; background-color: #fff !important; border: 1px solid #d1d5db !important; padding: 6px 0 !important; font-size: 12px !important; cursor: pointer !important; transition: background-color 0.2s !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; color: #1f2937 !important; line-height: 1.4 !important; }
+      .a11y-filter-button:first-child { border-radius: 6px 0 0 6px !important; }
+      .a11y-filter-button:last-child { border-radius: 0 6px 6px 0 !important; border-left: 0 !important; }
+      .a11y-filter-button.active { background-color: #e5e7eb !important; font-weight: 600 !important; }
+      .a11y-results-list { list-style: none !important; padding: 0 !important; margin: 0 !important; flex: 1 !important; overflow-y: auto !important; }
+      .a11y-violation-item { padding: 16px !important; border-bottom: 1px solid #f3f4f6 !important; cursor: pointer !important; }
+      .a11y-violation-item:hover { background-color: #f9fafb !important; }
+      .a11y-violation-item.selected { background-color: #eff6ff !important; border-left: 4px solid #3b82f6 !important; padding-left: 12px !important; }
+      .a11y-violation-title { font-weight: 600 !important; margin-bottom: 4px !important; font-size: 14px !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; color: #1f2937 !important; line-height: 1.4 !important; }
+      .a11y-violation-meta { font-size: 12px !important; line-height: 17px !important; color: #6b7280 !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; line-height: 1.4 !important; }
+      .a11y-detail-view { flex: 1 !important; padding: 24px !important; overflow-y: auto !important; background-color: #f9fafb !important; }
+      .a11y-detail-view.hidden { display: none !important; }
+      .a11y-detail-header { border-bottom: 1px solid #e5e7eb !important; padding-bottom: 16px !important; margin-bottom: 16px !important; }
+      .a11y-detail-title { font-size: 20px !important; font-weight: 600 !important; margin-bottom: 8px !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; color: #1f2937 !important; line-height: 1.4 !important; }
+      .a11y-tag { display: inline-block !important; padding: 4px 10px !important; font-size: 10.5px !important; font-weight: 500 !important; border-radius: 9999px !important; margin-right: 8px !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; line-height: 1.4 !important; }
+      .a11y-tag-error { background-color: #fee2e2 !important; color: #991b1b !important; }
+      .a11y-tag-warning { background-color: #fef3c7 !important; color: #92400e !important; }
+      .a11y-tag-wcag { background-color: #dbeafe !important; color: #1e40af !important; }
+      .a11y-detail-section { margin-bottom: 24px !important; }
+      .a11y-detail-section h3 { font-size: 14px !important; font-weight: 600 !important; text-transform: uppercase !important; color: #6b7280 !important; margin-bottom: 12px !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; line-height: 1.4 !important; }
+      .a11y-detail-section p, .a11y-detail-section ul { font-size: 14px !important; color: #374151 !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; margin-bottom: 12px !important; }
+      .a11y-code-block { position: relative !important; background-color: #1f2937 !important; color: #f3f4f6 !important; padding: 24px 16px !important; border-radius: 8px !important; font-family: "Courier New", monospace !important; font-size: 14px !important; margin-bottom: 12px !important; }
+      .a11y-code-block button.copy-btn { position: absolute !important; top: 8px !important; right: 8px !important; background: #374151 !important; color: #f9fafb !important; border: none !important; border-radius: 6px !important; padding: 4px 8px !important; font-size: 12px !important; cursor: pointer !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; }
+      .a11y-code-block button.copy-btn.copied { background: #16a34a !important; }
+      .a11y-code-block pre { white-space: pre-line !important; line-height: 17px !important; word-break: break-all !important; font-family: "Courier New", monospace !important; font-size: 14px !important; color: #f3f4f6 !important; margin: 0 !important; }
+      .a11y-empty-state { text-align: center !important; padding: 32px !important; color: #6b7280 !important; font-size: 14px !important; font-family: -apple-system, BlinkMacSystemFont, "Segue UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; line-height: 1.6 !important; }
+      .a11y-detail-section ul.resources-links { padding: 0 !important; }
+      .a11y-detail-section .resources-links li { word-break: break-all !important; font-size: 14px !important; font-family: -apple-system, BlinkMacSystemFont, "Segue UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; color: #374151 !important; line-height: 1.6 !important; margin-bottom: 8px !important; }
+      .a11y-detail-section .resources-links a { color: #3b82f6 !important; text-decoration: underline !important; }
     `;
     const styleElement = document.createElement("style");
     styleElement.id = "a11y-panel-styles";

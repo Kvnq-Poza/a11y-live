@@ -51,20 +51,20 @@ class Tutorial {
   _injectStyles() {
     if (document.getElementById("a11y-tutorial-styles")) return;
     const styles = `
-            .a11y-tutorial-backdrop { position: fixed; inset: 0; background-color: rgba(0,0,0,0.5); z-index: 2147483647; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
-            .a11y-tutorial-backdrop.visible { opacity: 1; pointer-events: auto; }
-            .a11y-tutorial-modal { background: #fff; border-radius: 0.75rem; width: 500px; max-width: 90vw; padding: 2rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,.1); text-align: center; transform: scale(0.95); transition: transform 0.3s ease; }
-            .a11y-tutorial-backdrop.visible .a11y-tutorial-modal { transform: scale(1); }
-            .a11y-tutorial-modal h2 { font-size: 1.5rem; font-weight: 600; margin-top: 0; margin-bottom: 1rem; color: #1f2937; }
-            .a11y-tutorial-modal p { font-size: 1rem; line-height: 1.5; color: #374151; margin-bottom: 2rem; }
-            .a11y-tutorial-nav { display: flex; justify-content: space-between; align-items: center; }
-            .a11y-tutorial-dots { display: flex; gap: 0.5rem; }
-            .a11y-tutorial-dot { width: 10px; height: 10px; border-radius: 50%; background-color: #d1d5db; transition: background-color 0.2s; }
-            .a11y-tutorial-dot.active { background-color: #3b82f6; }
-            .a11y-tutorial-btn { background: #3b82f6; color: white; border: none; padding: 0.625rem 1.25rem; font-size: 0.875rem; font-weight: 500; border-radius: 0.375rem; cursor: pointer; transition: background-color 0.2s; }
-            .a11y-tutorial-btn:hover { background: #2563eb; }
-            .a11y-tutorial-btn.secondary { background-color: #e5e7eb; color: #374151; }
-            .a11y-tutorial-btn.secondary:hover { background-color: #d1d5db; }
+            .a11y-tutorial-backdrop { position: fixed !important; inset: 0 !important; background-color: rgba(0,0,0,0.5) !important; z-index: 2147483647 !important; display: flex !important; align-items: center !important; justify-content: center !important; opacity: 0 !important; transition: opacity 0.3s ease !important; pointer-events: none !important; }
+            .a11y-tutorial-backdrop.visible { opacity: 1 !important; pointer-events: auto !important; }
+            .a11y-tutorial-modal { background: #fff !important; border-radius: 12px !important; width: 500px !important; max-width: 90vw !important; padding: 32px !important; box-shadow: 0 10px 15px -3px rgba(0,0,0,.1) !important; text-align: center !important; transform: scale(0.95) !important; transition: transform 0.3s ease !important; }
+            .a11y-tutorial-backdrop.visible .a11y-tutorial-modal { transform: scale(1) !important; }
+            .a11y-tutorial-modal h2 { font-size: 24px !important; font-weight: 600 !important; margin-top: 0 !important; margin-bottom: 16px !important; color: #1f2937 !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; line-height: 1.4 !important; }
+            .a11y-tutorial-modal p { font-size: 16px !important; line-height: 1.6 !important; color: #374151 !important; margin-bottom: 32px !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; }
+            .a11y-tutorial-nav { display: flex !important; justify-content: space-between !important; align-items: center !important; }
+            .a11y-tutorial-dots { display: flex !important; gap: 8px !important; }
+            .a11y-tutorial-dot { width: 10px !important; height: 10px !important; border-radius: 50% !important; background-color: #d1d5db !important; transition: background-color 0.2s !important; }
+            .a11y-tutorial-dot.active { background-color: #3b82f6 !important; }
+            .a11y-tutorial-btn { background: #3b82f6 !important; color: white !important; border: none !important; padding: 10px 20px !important; font-size: 14px !important; font-weight: 500 !important; border-radius: 6px !important; cursor: pointer !important; transition: background-color 0.2s !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; line-height: 1.4 !important; }
+            .a11y-tutorial-btn:hover { background: #2563eb !important; }
+            .a11y-tutorial-btn.secondary { background-color: #e5e7eb !important; color: #374151 !important; }
+            .a11y-tutorial-btn.secondary:hover { background-color: #d1d5db !important; }
         `;
     const styleEl = document.createElement("style");
     styleEl.id = "a11y-tutorial-styles";

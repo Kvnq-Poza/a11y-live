@@ -537,9 +537,9 @@ class A11yEngine {
    */
   _updateStats(elementsProcessed, analysisTime, violationsFound) {
     this._stats.analysisCount++;
-    this._stats.totalAnalysisTime += analysisTime;
-    this._stats.elementsProcessed += elementsProcessed;
-    this._stats.violationsFound += violationsFound;
+    this._stats.totalAnalysisTime = analysisTime;
+    this._stats.elementsProcessed = elementsProcessed;
+    this._stats.violationsFound = violationsFound;
   }
 
   /**

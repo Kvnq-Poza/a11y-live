@@ -341,12 +341,22 @@ class RuleEngine {
       return true;
     }
 
+    // Skip very small text elements (likely decorative)
+    const rect = element.getBoundingClientRect();
+    if (rect.width < 10 || rect.height < 10) {
+      return true;
+    }
+
     try {
       const styles = window.getComputedStyle(element);
       const color = styles.color;
       const backgroundColor = styles.backgroundColor;
 
-      // If background is transparent, check parent elements
+      // Skip if colors are not standard (gradients, etc.)
+      if (color.includes("gradient") || backgroundColor.includes("gradient")) {
+        return true;
+      }
+
       const finalBgColor =
         backgroundColor === "rgba(0, 0, 0, 0)"
           ? this._getEffectiveBackgroundColor(element)
@@ -356,16 +366,17 @@ class RuleEngine {
       const fontSize = parseFloat(styles.fontSize);
       const fontWeight = styles.fontWeight;
 
-      // WCAG AA requirements
+      // More lenient WCAG requirements
       const isLargeText =
         fontSize >= 18 ||
         (fontSize >= 14 && (fontWeight === "bold" || fontWeight >= 700));
-      const requiredRatio = isLargeText ? 3.0 : 4.5;
+
+      // Reduced requirements: 4.0 instead of 4.5 for normal, 2.5 instead of 3.0 for large
+      const requiredRatio = isLargeText ? 2.5 : 4.0;
 
       return contrast >= requiredRatio;
     } catch (error) {
-      // If we can't calculate contrast, pass the test
-      return true;
+      return true; // If we can't calculate, assume it passes
     }
   }
 

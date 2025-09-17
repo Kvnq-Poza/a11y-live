@@ -453,53 +453,49 @@ class RuleEngine {
   }
 
   /**
-   * Check if element has visible focus indicator
+   * Check if element has a visible focus indicator.
+   *
+   * Browser defaults always provide a focus outline (:focus-visible) for
+   * interactive elements (links, buttons, inputs, etc.). Instead of trying
+   * to simulate focus and compare styles, We now the default
+   * indicator is present unless it has been explicitly disabled.
+   *
+   * @returns true if:
+   *  - the element is not visible or disabled, OR
+   *  - it retains a visible outline, OR
+   *  - it has an alternative visible focus style (box-shadow, border,
+   *    background, text-decoration, or color change).
+   *
+   * Returns false only when all visible indicators are removed, e.g.
+   * `outline: none;` with no replacement styling.
    */
   _hasFocusIndicator(element) {
     if (!this._isElementVisible(element) || element.disabled) {
+      return true; // not applicable
+    }
+
+    const styles = window.getComputedStyle(element);
+
+    // Check if author explicitly removed outline
+    const outlineRemoved =
+      styles.outlineStyle === "none" || parseFloat(styles.outlineWidth) === 0;
+
+    // If outline is present, we’re good
+    if (!outlineRemoved) {
       return true;
     }
 
-    const unfocusedStyles = window.getComputedStyle(element);
-    const activeElement = document.activeElement;
-    const wasAlreadyActive = activeElement === element;
-
-    if (!wasAlreadyActive) {
-      element.focus({ preventScroll: true });
-    }
-
-    const focusedStyles = window.getComputedStyle(element);
-
-    if (!wasAlreadyActive) {
-      if (activeElement && typeof activeElement.focus === "function") {
-        activeElement.focus({ preventScroll: true });
-      } else {
-        element.blur();
-      }
-    }
-
-    const hasOutline =
-      focusedStyles.outlineStyle !== "none" &&
-      parseFloat(focusedStyles.outlineWidth) > 0;
-    if (hasOutline) return true;
-
-    const hasBoxShadow =
-      focusedStyles.boxShadow !== "none" &&
-      focusedStyles.boxShadow !== unfocusedStyles.boxShadow;
+    // Otherwise, check if author provided alternative visible cues
+    const hasBoxShadow = styles.boxShadow && styles.boxShadow !== "none";
+    const hasBorder = styles.border && styles.border !== "none";
     const hasBgChange =
-      focusedStyles.backgroundColor !== unfocusedStyles.backgroundColor;
-    const hasBorderChange = focusedStyles.border !== unfocusedStyles.border;
+      styles.backgroundColor && styles.backgroundColor !== "transparent";
     const hasTextDecoration =
-      focusedStyles.textDecorationLine !== "none" &&
-      focusedStyles.textDecorationLine !== unfocusedStyles.textDecorationLine;
-    const hasColorChange = focusedStyles.color !== unfocusedStyles.color;
+      styles.textDecorationLine && styles.textDecorationLine !== "none";
+    const hasColor = styles.color && styles.color !== "inherit";
 
     return (
-      hasBoxShadow ||
-      hasBgChange ||
-      hasBorderChange ||
-      hasTextDecoration ||
-      hasColorChange
+      hasBoxShadow || hasBorder || hasBgChange || hasTextDecoration || hasColor
     );
   }
 

@@ -56,6 +56,7 @@ class Panel {
       .a11y-tag { display: inline-block !important; padding: 4px 10px !important; font-size: 10.5px !important; font-weight: 500 !important; border-radius: 9999px !important; margin-right: 8px !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; line-height: 1.4 !important; }
       .a11y-tag-error { background-color: #fee2e2 !important; color: #991b1b !important; }
       .a11y-tag-warning { background-color: #fef3c7 !important; color: #92400e !important; }
+      .a11y-tag-info { background-color: #efefee !important; color: #0b55f5 !important; }
       .a11y-tag-wcag { background-color: #dbeafe !important; color: #1e40af !important; }
       .a11y-detail-section { margin-bottom: 24px !important; }
       .a11y-detail-section h3 { font-size: 14px !important; font-weight: 600 !important; text-transform: uppercase !important; color: #6b7280 !important; margin-bottom: 12px !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; line-height: 1.4 !important; }
@@ -99,6 +100,7 @@ class Panel {
               <button class="a11y-filter-button active" data-filter="all">All</button>
               <button class="a11y-filter-button" data-filter="error">Errors</button>
               <button class="a11y-filter-button" data-filter="warning">Warnings</button>
+              <button class="a11y-filter-button" data-filter="info">Info</button>
             </div>
           </div>
           <ul class="a11y-results-list"></ul>

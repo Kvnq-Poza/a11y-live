@@ -777,7 +777,7 @@ class RuleEngine {
   }
 
   /**
-   * Generate CSS selector for element
+   * Generate selector for element
    */
   _getElementSelector(element) {
     // If element has an ID, use it
@@ -785,7 +785,44 @@ class RuleEngine {
       return `#${CSS.escape(element.id)}`;
     }
 
-    // Build a path from root to element
+    // If element has unique classes, use them
+    if (element.className && typeof element.className === "string") {
+      const classes = element.className
+        .trim()
+        .split(/\s+/)
+        .filter((c) => c);
+      if (classes.length > 0) {
+        // Check if this class combination is unique
+        const classSelector = "." + classes.map((c) => CSS.escape(c)).join(".");
+        const tagWithClass = element.tagName.toLowerCase() + classSelector;
+
+        if (document.querySelectorAll(tagWithClass).length === 1) {
+          return tagWithClass;
+        }
+      }
+    }
+
+    // Try to find a unique attribute-based selector
+    const uniqueAttrs = [
+      "data-testid",
+      "data-cy",
+      "aria-label",
+      "title",
+      "alt",
+    ];
+    for (const attr of uniqueAttrs) {
+      if (element.hasAttribute(attr)) {
+        const value = element.getAttribute(attr);
+        const selector = `${element.tagName.toLowerCase()}[${attr}="${CSS.escape(
+          value
+        )}"]`;
+        if (document.querySelectorAll(selector).length === 1) {
+          return selector;
+        }
+      }
+    }
+
+    // Build a minimal path using semantic landmarks
     const path = [];
     let current = element;
 
@@ -796,18 +833,33 @@ class RuleEngine {
     ) {
       let selector = current.tagName.toLowerCase();
 
-      // Add class information if available
-      if (current.className && typeof current.className === "string") {
-        const classes = current.className
-          .trim()
-          .split(/\s+/)
-          .filter((c) => c);
-        if (classes.length > 0) {
-          selector += "." + classes.map((c) => CSS.escape(c)).join(".");
-        }
+      // Add semantic information for key elements
+      if (
+        current.tagName.toLowerCase() === "main" ||
+        current.getAttribute("role") === "main"
+      ) {
+        path.unshift("main");
+        break;
       }
 
-      // Add nth-child for specificity if needed
+      if (
+        ["nav", "header", "footer", "aside", "section", "article"].includes(
+          current.tagName.toLowerCase()
+        )
+      ) {
+        path.unshift(selector);
+        current = current.parentElement;
+        continue;
+      }
+
+      // For other elements, add minimal identifying information
+      if (current.id) {
+        selector = `#${CSS.escape(current.id)}`;
+        path.unshift(selector);
+        break;
+      }
+
+      // Add position only if there are multiple similar siblings
       const parent = current.parentElement;
       if (parent) {
         const siblings = Array.from(parent.children).filter(
@@ -822,6 +874,9 @@ class RuleEngine {
 
       path.unshift(selector);
       current = current.parentElement;
+
+      // Limit path depth to keep selectors readable
+      if (path.length >= 4) break;
     }
 
     return path.join(" > ") || element.tagName.toLowerCase();

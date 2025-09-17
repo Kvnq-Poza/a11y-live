@@ -52,6 +52,10 @@ class Overlay {
   border-color:#f59e0b;
   background-color:rgba(245,158,11,0.1);
 }
+#a11y-highlight.info{
+  border-color:#0b55f5;
+  background-color: rgba(11,85,245,0.1)
+}
 #a11y-tooltip{
   position:absolute;
   bottom:100%;

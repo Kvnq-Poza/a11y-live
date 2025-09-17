@@ -197,6 +197,93 @@ class RuleEngine {
         message: "HTML element is missing lang attribute",
         suggestion: 'Add lang attribute to html element: <html lang="en">',
       },
+
+      {
+        id: "missing-skip-links",
+        name: "Missing Skip Navigation Links",
+        description:
+          "Consider adding skip links to improve keyboard navigation",
+        wcag: "2.4.1",
+        severity: "info",
+        category: "keyboard",
+        tags: ["skip-links", "navigation", "keyboard"],
+        selector: "body",
+        test: (element) => {
+          const skipLinks = document.querySelectorAll(
+            'a[href^="#"]:first-child, a[href^="#skip"]'
+          );
+          return skipLinks.length > 0;
+        },
+        message: "Consider adding skip navigation links",
+        suggestion:
+          "Add skip links at the beginning of the page for keyboard users",
+      },
+
+      {
+        id: "image-text-alternative",
+        name: "Images of Text",
+        description:
+          "Consider using actual text instead of images of text when possible",
+        wcag: "1.4.5",
+        severity: "info",
+        category: "multimedia",
+        tags: ["images", "text", "readability"],
+        selector: "img[alt*='text'], img[alt*='Text']",
+        test: (element) => {
+          // This is an informational rule - always returns false to flag for review
+          const alt = element.alt.toLowerCase();
+          return !(
+            alt.includes("text") ||
+            alt.includes("word") ||
+            alt.includes("letter")
+          );
+        },
+        message:
+          "Image may contain text that could be replaced with actual text",
+        suggestion:
+          "Consider using CSS styling and actual text instead of images of text",
+      },
+
+      {
+        id: "redundant-alt-text",
+        name: "Redundant Alt Text",
+        description: "Alt text may be redundant with surrounding context",
+        wcag: "1.1.1",
+        severity: "info",
+        category: "multimedia",
+        tags: ["images", "alt-text", "redundancy"],
+        selector: "img[alt]",
+        test: (element) => {
+          const alt = element.alt.toLowerCase();
+          const redundantPhrases = [
+            "image of",
+            "picture of",
+            "photo of",
+            "graphic of",
+          ];
+          return !redundantPhrases.some((phrase) => alt.includes(phrase));
+        },
+        message: "Alt text may contain redundant phrases",
+        suggestion:
+          "Remove phrases like 'image of' or 'picture of' from alt text",
+      },
+
+      {
+        id: "long-alt-text",
+        name: "Long Alt Text",
+        description: "Alt text is very long and might benefit from longdesc",
+        wcag: "1.1.1",
+        severity: "info",
+        category: "multimedia",
+        tags: ["images", "alt-text", "length"],
+        selector: "img[alt]",
+        test: (element) => {
+          return element.alt.length <= 125; // Recommended max length
+        },
+        message: "Alt text is longer than recommended (125 characters)",
+        suggestion:
+          "Consider using longdesc for complex images or shortening alt text",
+      },
     ];
 
     // Store rules and enable all by default

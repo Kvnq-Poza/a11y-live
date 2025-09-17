@@ -52,14 +52,14 @@ class Panel {
       .a11y-detail-view { flex: 1 !important; padding: 24px !important; overflow-y: auto !important; background-color: #f9fafb !important; }
       .a11y-detail-view.hidden { display: none !important; }
       .a11y-detail-header { border-bottom: 1px solid #e5e7eb !important; padding-bottom: 16px !important; margin-bottom: 16px !important; }
-      .a11y-detail-title { font-size: 20px !important; font-weight: 600 !important; margin-bottom: 8px !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; color: #1f2937 !important; line-height: 1.4 !important; }
+      .a11y-detail-title { font-size: 20px !important; font-weight: 600 !important; max-height: fit-content !important; margin-bottom: 8px !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; color: #1f2937 !important; line-height: 1.4 !important; }
       .a11y-tag { display: inline-block !important; padding: 4px 10px !important; font-size: 10.5px !important; font-weight: 500 !important; border-radius: 9999px !important; margin-right: 8px !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; line-height: 1.4 !important; }
       .a11y-tag-error { background-color: #fee2e2 !important; color: #991b1b !important; }
       .a11y-tag-warning { background-color: #fef3c7 !important; color: #92400e !important; }
       .a11y-tag-wcag { background-color: #dbeafe !important; color: #1e40af !important; }
       .a11y-detail-section { margin-bottom: 24px !important; }
       .a11y-detail-section h3 { font-size: 14px !important; font-weight: 600 !important; text-transform: uppercase !important; color: #6b7280 !important; margin-bottom: 12px !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; line-height: 1.4 !important; }
-      .a11y-detail-section p, .a11y-detail-section ul { font-size: 14px !important; color: #374151 !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; margin-bottom: 12px !important; }
+      .a11y-detail-section p, .a11y-detail-section ul { font-size: 14px !important; color: #374151 !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; margin-bottom: 12px !important; line-height: 15px !important; }
       .a11y-code-block { position: relative !important; background-color: #1f2937 !important; color: #f3f4f6 !important; padding: 24px 16px !important; border-radius: 8px !important; font-family: "Courier New", monospace !important; font-size: 14px !important; margin-bottom: 12px !important; }
       .a11y-code-block button.copy-btn { position: absolute !important; top: 8px !important; right: 8px !important; background: #374151 !important; color: #f9fafb !important; border: none !important; border-radius: 6px !important; padding: 4px 8px !important; font-size: 12px !important; cursor: pointer !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; }
       .a11y-code-block button.copy-btn.copied { background: #16a34a !important; }

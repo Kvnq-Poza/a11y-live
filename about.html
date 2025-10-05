@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>About | A11y Live</title>
+    <meta
+      name="description"
+      content="Learn about A11y Live - our mission to make the web accessible for everyone through real-time accessibility testing."
+    />
+    <link
+      rel="shortcut icon"
+      href="assets//icons/favicon.ico"
+      type="image/x-icon"
+    />
+
+    <link rel="stylesheet" href="assets/style.css" />
+    <link rel="stylesheet" href="assets/theme.css" />
+  </head>
+  <body>
+    <div class="container">
+      <a class="skip-link" href="#main">Skip to content</a>
+
+      <header class="site-header" role="banner">
+        <div class="container nav-row">
+          <a class="brand" href="/" aria-label="A11y Live home">
+            <img
+              src="assets/icons/a11y-live-logo-2.png"
+              alt="a11y-live-logo"
+              class="a11y-logo-img"
+            />
+            <div class="title">A11y Live</div>
+          </a>
+
+          <nav aria-label="Primary navigation" id="primary-nav">
+            <ul>
+              <li><a href="/#features">Features</a></li>
+              <li><a href="/#how-it-works">How it Works</a></li>
+              <li><a href="/#benefits">Benefits</a></li>
+            </ul>
+          </nav>
+
+          <div class="header-actions">
+            <button
+              class="nav-toggle"
+              aria-controls="primary-nav"
+              aria-expanded="false"
+              aria-label="Toggle menu"
+            >
+              ☰
+            </button>
+            <a class="btn btn-primary" href="demo.html">Try Live Demo</a>
+          </div>
+        </div>
+      </header>
+
+      <!-- MAIN -->
+      <main id="main" tabindex="-1">
+        <!-- ABOUT HERO -->
+        <section
+          class="hero"
+          style="padding: 3rem 0"
+          aria-labelledby="about-heading"
+        >
+          <div class="container">
+            <h1
+              id="about-heading"
+              style="text-align: center; margin-bottom: 1rem"
+            >
+              About A11y Live
+            </h1>
+            <p
+              style="
+                text-align: center;
+                font-size: 1.125rem;
+                color: var(--muted);
+                max-width: 700px;
+                margin: 0 auto;
+              "
+            >
+              Making websites work for everyone with real-time testing
+            </p>
+          </div>
+        </section>
+
+        <!-- MISSION -->
+        <section class="container" style="padding: 2rem 0">
+          <div style="max-width: 800px; margin: 0 auto">
+            <h2>Why We Built This</h2>
+            <p>
+              Here's the thing: testing if your website is accessible shouldn't
+              be complicated. We made A11y Live because we wanted something that
+              just works and tells you what's wrong right away.
+            </p>
+            <p>
+              Too many tools make you wait or give confusing results. We're
+              different. Our tool shows you problems as they happen and explains
+              how to fix them in plain English. No confusing tech terms. No
+              waiting around.
+            </p>
+            <p>
+              Everyone should be able to use the websites you build. People who
+              can't see well, people who use keyboards instead of a mouse,
+              people with screen readers. Your site should work for all of them.
+            </p>
+          </div>
+        </section>
+
+        <!-- WHAT WE DO -->
+        <section class="container" style="padding: 2rem 0">
+          <div style="max-width: 800px; margin: 0 auto">
+            <h2>What A11y Live Does</h2>
+            <p>
+              Think of it like spell-check, but for accessibility. While you're
+              building your website, A11y Live watches for problems and points
+              them out instantly.
+            </p>
+            <p>Here's what you get:</p>
+            <ul style="line-height: 1.8; color: var(--text)">
+              <li>
+                <strong>Instant feedback:</strong> See problems the moment they
+                appear
+              </li>
+              <li>
+                <strong>Visual highlights:</strong> Colored markers show you
+                exactly where issues are
+              </li>
+              <li>
+                <strong>Easy fixes:</strong> Simple instructions with actual
+                code you can copy
+              </li>
+              <li>
+                <strong>Learn as you go:</strong> Understand why each fix
+                matters for real people
+              </li>
+              <li>
+                <strong>WCAG standards:</strong> Follows the official web
+                accessibility rules
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- WHY IT MATTERS -->
+        <section
+          class="container"
+          style="
+            padding: 2rem 0;
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            margin-top: 2rem;
+          "
+        >
+          <div style="max-width: 800px; margin: 0 auto; padding: 1.5rem">
+            <h2>Why This Stuff Matters</h2>
+            <p>
+              Over a billion people have some kind of disability. That's a lot
+              of people who might struggle with your website if it's not built
+              right.
+            </p>
+            <p>Making your site accessible isn't just nice to do. It also:</p>
+            <ul style="line-height: 1.8; color: var(--text)">
+              <li>
+                Gets you more visitors and makes everyone's experience better
+              </li>
+              <li>Helps your site rank higher on Google</li>
+              <li>
+                Keeps you out of legal trouble (some countries have laws about
+                this)
+              </li>
+              <li>Shows you care about including everyone</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- TECHNOLOGY -->
+        <section class="container" style="padding: 2rem 0">
+          <div style="max-width: 800px; margin: 0 auto">
+            <h2>How It Works</h2>
+            <p>
+              We built this with vanilla JavaScript (no fancy frameworks
+              needed). The tool uses something called MutationObserver to watch
+              your page for changes in real-time.
+            </p>
+            <p>What makes it good:</p>
+            <ul style="line-height: 1.8; color: var(--text)">
+              <li><strong>Super light:</strong> Doesn't slow down your site</li>
+              <li>
+                <strong>Fast checks:</strong> Smart caching means it doesn't
+                check the same stuff twice
+              </li>
+              <li>
+                <strong>You can customize it:</strong> Add your own rules if you
+                want by contributing to our
+                <a
+                  href="https://github.com/Kvnq-Poza/a11y-live"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="color: var(--primary)"
+                  >github repo</a
+                >
+              </li>
+              <li>
+                <strong>Works everywhere:</strong> All modern browsers support
+                it
+              </li>
+            </ul>
+            <p>
+              We wanted to make something powerful but also easy to understand,
+              even if you're new to accessibility testing.
+            </p>
+          </div>
+        </section>
+
+        <!-- RELATED TOOLS -->
+        <section class="container" style="padding: 2rem 0">
+          <div style="max-width: 800px; margin: 0 auto">
+            <h2>Other Cool Tools We Have</h2>
+            <p>
+              We love building stuff that makes life easier for developers.
+              Check out these other tools:
+            </p>
+
+            <div style="display: grid; gap: 1.5rem; margin-top: 1.5rem">
+              <article class="card">
+                <h3 style="margin-top: 0; color: var(--primary)">
+                  FreeTools.org
+                </h3>
+                <p style="margin: 0.5rem 0">
+                  Need more free resources? Check out Freetools, with over 100
+                  tools across over 11 categories, you're sure to find a tool to
+                  suit your needs. <br />
+                  All free, no signup needed.
+                </p>
+                <a
+                  href="https://freetools.org"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-outline"
+                  style="display: inline-block; margin-top: 1rem"
+                >
+                  Check It Out →
+                </a>
+              </article>
+
+              <article class="card">
+                <h3 style="margin-top: 0; color: var(--primary)">
+                  TubePilot.ai
+                </h3>
+                <p style="margin: 0.5rem 0">
+                  Got a YouTube channel? We have over 50 tools to help you grow
+                  your YouTube account. <br />
+                  Make better thumbnails, analyze your videos, get title ideas,
+                  and figure out what's working.
+                </p>
+                <a
+                  href="https://tubepilot.ai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-outline"
+                  style="display: inline-block; margin-top: 1rem"
+                >
+                  Visit TubePilot →
+                </a>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="container" style="padding: 3rem 0">
+          <div class="cta-block">
+            <h2 style="margin: 0">Ready to Try It?</h2>
+            <p>Test your website right now and see what needs fixing.</p>
+            <div
+              style="
+                display: flex;
+                gap: 12px;
+                flex-wrap: wrap;
+                justify-content: center;
+              "
+            >
+              <a class="btn btn-primary" href="demo.html">Try Live Demo</a>
+              <a class="btn btn-primary" href="/#features">See Features</a>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container footer-grid">
+        <div>
+          <h4>A11y Live</h4>
+          <p style="color: var(--muted); margin-top: 8px">
+            Making the web accessible for everyone, one website at a time.
+          </p>
+        </div>
+        <div>
+          <h4>Product</h4>
+          <p style="margin: 0"><a href="#features">Features</a></p>
+          <p style="margin: 0"><a href="demo.html">Demo</a></p>
+          <p style="margin: 0"><a href="about.html">About</a></p>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <p style="margin: 0">
+            <a href="https://www.w3.org/WAI/WCAG21/quickref/"
+              >WCAG Guidelines</a
+            >
+          </p>
+          <p style="margin: 0"><a href="https://webaim.org/">WebAIM</a></p>
+        </div>
+        <div>
+          <h4>More Tools</h4>
+          <p style="margin: 0">
+            <a href="https://freetools.org">Freetools</a>
+          </p>
+          <p style="margin: 0"><a href="https://tubepilot.ai/">TubePilot</a></p>
+        </div>
+      </div>
+
+      <div class="container footer-bottom">
+        <div id="footer-year">
+          &copy; <span id="year"></span> A11y Live. Built to make the web better
+          for everyone.
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/script.js"></script>
+  </body>
+</html>
